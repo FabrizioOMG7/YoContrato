@@ -1,4 +1,3 @@
-// lib/presentation/pages/dashboard_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -225,31 +224,35 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.12),
-              blurRadius: 10,
-              offset: const Offset(0, -2),
+              color: Colors.black.withOpacity(0.18),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
             ),
           ],
         ),
-        child: BottomNavigationBar(
-          backgroundColor: isDarkMode ? const Color(0xFF030F0F) : AppTheme.primary,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            if (index == 0) {
-              _showModulesMenu();
-            } else {
-              setState(() => _currentIndex = index);
-            }
-          },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menú'),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 6, top: 2),
+          child: BottomNavigationBar(
+            backgroundColor: isDarkMode ? const Color(0xFF030F0F) : AppTheme.primary,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              if (index == 0) {
+                _showModulesMenu();
+              } else {
+                setState(() => _currentIndex = index);
+              }
+            },
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menú'),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Buscar'),
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+              BottomNavigationBarItem(icon: Icon(Icons.person_add_alt_1), label: 'Agregar'),
+              BottomNavigationBarItem(icon: Icon(Icons.sync), label: 'Sincronizar'),
+            ],
+          ),
         ),
       ),
     );
@@ -365,6 +368,7 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
                   DropdownMenuItem(value: "Chiclayo", child: Text("Chiclayo")),
                   DropdownMenuItem(value: "Lima", child: Text("Lima")),
                   DropdownMenuItem(value: "Arequipa", child: Text("Arequipa")),
+                  DropdownMenuItem(value: "Trujillo", child: Text("Trujillo")),
                 ],
                 onChanged: (value) {
                   if (value != null) {
@@ -378,9 +382,12 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
             ),
             Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
             SwitchListTile(
-              secondary: Icon(Icons.dark_mode, color: iconColor),
+              secondary: Icon(
+                isDarkMode ? Icons.nightlight_round : Icons.wb_sunny_outlined,
+                color: iconColor,
+              ),
               title: Text(
-                isDarkMode ? "Modo claro" : "Modo oscuro",
+                "Tema",
                 style: GoogleFonts.montserrat(color: textColor, fontWeight: FontWeight.w500),
               ),
               value: isDarkMode,
