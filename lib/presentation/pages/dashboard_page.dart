@@ -5,6 +5,7 @@ import '../bloc/stat_cubit.dart';
 import '../../domain/entities/module.dart';
 import '../widgets/stat_card.dart';
 import '../../core/theme/app_theme.dart';
+import 'register_applicant_page.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -241,6 +242,11 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
             onTap: (index) {
               if (index == 0) {
                 _showModulesMenu();
+              } else if (index == 3) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const RegisterApplicantPage()),
+                );
               } else {
                 setState(() => _currentIndex = index);
               }
@@ -258,7 +264,7 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
     );
   }
 
-  // Menú hamburguesa con módulos
+  // Panel de módulos
   Widget _buildModulesPanel() {
     return Container(
       decoration: BoxDecoration(
