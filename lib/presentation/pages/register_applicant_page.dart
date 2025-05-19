@@ -15,12 +15,22 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
     Event(
       nombre: 'EVENTO PRUEBA FIN',
       fecha: '01/04/2025 - 30/04/2025',
-      sede: 'C5 NORTE',
+      sede: 'CHICLAYO',
       areaCargo: 'AUXILIAR DE INVESTIGACION Y DESARROLLO',
       cultivo: 'CULTIVO',
       tipoFipe: 'interno',
       requerimientos: 5,
       totalAvance: 2,
+    ),
+    Event(
+      nombre: 'EVENTO PRUEBA FIN 2',
+      fecha: '01/05/2025 - 30/05/2025',
+      sede: 'TRUJILLO',
+      areaCargo: 'GESTIÓN DE CALIDAD',
+      cultivo: 'CULTIVO',
+      tipoFipe: 'interno',
+      requerimientos: 3,
+      totalAvance: 1,
     ),
     // Puedes agregar más eventos aquí...
   ];
@@ -38,13 +48,15 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Registro de postulantes',
+          'Inscripción de postulantes',
           style: GoogleFonts.montserrat(
             fontWeight: FontWeight.bold,
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 17,
             letterSpacing: 1.1,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         backgroundColor: isDarkMode ? const Color(0xFF161F49) : Theme.of(context).primaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -64,27 +76,43 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Cabecera de sede
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-              decoration: BoxDecoration(
-                color: isDarkMode ? const Color(0xFF161F49) : Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.06),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Text(
-                'C5 NORTE',
-                style: GoogleFonts.montserrat(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: isDarkMode ? Colors.white : Colors.black87,
+            // Cabecera de sede mejorada
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              color: isDarkMode ? const Color(0xFF1B254B) : Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: isDarkMode ? Colors.white12 : Colors.blue[50],
+                      child: const Icon(Icons.location_on, color: Colors.blueAccent),
+                    ),
+                    const SizedBox(width: 14),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sede principal',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 12,
+                            color: isDarkMode ? Colors.white54 : Colors.black45,
+                          ),
+                        ),
+                        Text(
+                          'CHICLAYO',
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: isDarkMode ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                  
+                  ],
                 ),
               ),
             ),
