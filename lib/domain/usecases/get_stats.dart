@@ -1,5 +1,5 @@
 // lib/domain/usecases/get_stats.dart
-import '../../core/usecases/usecase.dart';
+import 'usecase.dart';
 import '../entities/stat_entity.dart';
 import '../repositories/stat_repository.dart';
 class GetStats implements UseCase<List<StatEntity>, void> {
