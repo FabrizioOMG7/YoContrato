@@ -1,7 +1,7 @@
 // lib/presentation/bloc/stat_cubit.dart
 import 'package:bloc/bloc.dart';
-import '../../domain/entities/stat_entity.dart';
-import '../../domain/usecases/get_stats.dart';
+import '../../../domain/entities/stat_entity.dart';
+import '../../../domain/usecases/get_stats.dart';
 
 // Estados mejor estructurados
 abstract class StatState {

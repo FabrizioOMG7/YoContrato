@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../bloc/stat_cubit.dart';
+import '../bloc/stat/stat_cubit.dart';
 import '../../domain/entities/module.dart';
 import '../widgets/stat_card.dart';
 import '../../core/theme/app_theme.dart';

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Importaciones del módulo de Stats
-import 'presentation/bloc/stat_cubit.dart';
+import 'presentation/bloc/stat/stat_cubit.dart';
 import 'data/datasources/stat_remote_datasource.dart';
 import 'data/repositories/stat_repository_impl.dart';
 import 'domain/usecases/get_stats.dart';
 
 // Importaciones del módulo de Login
-import 'presentation/bloc/auth_bloc.dart'; // AuthBloc
+import 'presentation/bloc/auth/auth_bloc.dart'; // AuthBloc
 import 'domain/usecases/login_user.dart'; // LoginUser
 import 'data/repositories/auth_repository_impl.dart'; // AuthRepositoryImpl
 
