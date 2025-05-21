@@ -48,11 +48,18 @@ class _EventCardState extends State<EventCard> {
                       const SizedBox(height: 2),
                       Row(
                         children: [
-                          const Icon(Icons.calendar_today, size: 14, color: Colors.blueAccent),
+                          const Icon(
+                            Icons.calendar_today,
+                            size: 14,
+                            color: Colors.blueAccent,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             widget.event.fecha,
-                            style: TextStyle(fontSize: 13, color: secondaryColor),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: secondaryColor,
+                            ),
                           ),
                         ],
                       ),
@@ -60,12 +67,18 @@ class _EventCardState extends State<EventCard> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(expanded ? Icons.expand_less : Icons.expand_more, color: Colors.blueAccent),
+                  icon: Icon(
+                    expanded ? Icons.expand_less : Icons.expand_more,
+                    color: Colors.blueAccent,
+                  ),
                   onPressed: () => setState(() => expanded = !expanded),
                   tooltip: expanded ? 'Ocultar detalles' : 'Ver detalles',
                 ),
                 IconButton(
-                  icon: const Icon(Icons.person_add_alt_1, color: Colors.green),
+                  icon: Icon(
+                    Icons.person_add_alt_1,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   onPressed: widget.onRegister,
                   tooltip: 'Registrar postulante',
                 ),
@@ -79,74 +92,40 @@ class _EventCardState extends State<EventCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Sede y área/cargo
+                    // Sede
                     Row(
                       children: [
-                        const Icon(Icons.location_on, size: 16, color: Colors.blueAccent),
+                        const Icon(
+                          Icons.location_on,
+                          size: 16,
+                          color: Colors.blueAccent,
+                        ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             widget.event.sede,
-                            style: TextStyle(fontWeight: FontWeight.w500, color: textColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        const Icon(Icons.work_outline, size: 16, color: Colors.orange),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            widget.event.areaCargo,
-                            style: TextStyle(color: secondaryColor),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: textColor,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    // Datos en dos columnas
+                    // Área/Cargo
                     Row(
                       children: [
                         Expanded(
-                          child: Row(
-                            children: [
-                              const Icon(Icons.grass, size: 16, color: Colors.teal),
-                              const SizedBox(width: 4),
-                              Flexible(
-                                child: Text(
-                                  'Cultivo: ',
-                                  style: TextStyle(fontWeight: FontWeight.w600, color: textColor),
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  widget.event.cultivo,
-                                  style: TextStyle(color: secondaryColor),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            'Cultivo: ${widget.event.cultivo}',
+                            style: TextStyle(color: secondaryColor),
                           ),
                         ),
                         Expanded(
-                          child: Row(
-                            children: [
-                              const Icon(Icons.assignment_turned_in, size: 16, color: Colors.purple),
-                              const SizedBox(width: 4),
-                              Flexible(
-                                child: Text(
-                                  'T.FIPE: ',
-                                  style: TextStyle(fontWeight: FontWeight.w600, color: textColor),
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  widget.event.tipoFipe.toUpperCase(),
-                                  style: TextStyle(color: secondaryColor),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            'T.FIPE: ${widget.event.tipoFipe.toUpperCase()}',
+                            style: TextStyle(color: secondaryColor),
                           ),
                         ),
                       ],
@@ -155,43 +134,15 @@ class _EventCardState extends State<EventCard> {
                     Row(
                       children: [
                         Expanded(
-                          child: Row(
-                            children: [
-                              const Icon(Icons.people, size: 16, color: Colors.indigo),
-                              const SizedBox(width: 4),
-                              Flexible(
-                                child: Text(
-                                  'Requerimientos: ',
-                                  style: TextStyle(fontWeight: FontWeight.w600, color: textColor),
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  '${widget.event.requerimientos}',
-                                  style: TextStyle(color: secondaryColor),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            'Requerimientos: ${widget.event.requerimientos}',
+                            style: TextStyle(color: secondaryColor),
                           ),
                         ),
                         Expanded(
-                          child: Row(
-                            children: [
-                              const Icon(Icons.trending_up, size: 16, color: Colors.redAccent),
-                              const SizedBox(width: 4),
-                              Flexible(
-                                child: Text(
-                                  'Avance: ',
-                                  style: TextStyle(fontWeight: FontWeight.w600, color: textColor),
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  '${widget.event.totalAvance}',
-                                  style: TextStyle(color: secondaryColor),
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            'Avance: ${widget.event.totalAvance}',
+                            style: TextStyle(color: secondaryColor),
                           ),
                         ),
                       ],

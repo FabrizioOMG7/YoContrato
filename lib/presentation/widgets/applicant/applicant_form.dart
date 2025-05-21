@@ -11,7 +11,7 @@ class ApplicantForm extends StatefulWidget {
 class _ApplicantFormState extends State<ApplicantForm> {
   final _formKey = GlobalKey<FormState>();
 
-  // Ejemplo de controladores para los campos
+  //controladores para los campos
   final TextEditingController _dniController = TextEditingController();
   final TextEditingController _nombresController = TextEditingController();
   final TextEditingController _apellidosController = TextEditingController();
