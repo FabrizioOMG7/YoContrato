@@ -3,7 +3,7 @@ import '../repositories/auth_repository.dart'; // Ruta correcta
 import '../entities/user.dart'; // User importado
 
 class LoginUser {
-  final AuthRepository repository;
+  final AuthRepository repository; 
 
   const LoginUser(this.repository);
 

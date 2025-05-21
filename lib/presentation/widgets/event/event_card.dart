@@ -118,6 +118,17 @@ class _EventCardState extends State<EventCard> {
                       children: [
                         Expanded(
                           child: Text(
+                            'AREA/CARGO: ${widget.event.areaCargo}',
+                            style: TextStyle(color: secondaryColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
                             'Cultivo: ${widget.event.cultivo}',
                             style: TextStyle(color: secondaryColor),
                           ),
