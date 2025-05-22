@@ -6,7 +6,6 @@ import '../widgets/stat_card.dart';
 import '../../core/theme/app_theme.dart';
 import 'register_applicant_page.dart';
 import '../../shared/app_footer.dart';
-import '../../shared/modules_data.dart';
 import '../../shared/modules_panel.dart';
 
 class DashboardPage extends StatefulWidget {
