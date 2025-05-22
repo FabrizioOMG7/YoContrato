@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yo_contrato_app/shared/modules_panel.dart';
 import '../../domain/entities/event.dart';
 import '../widgets/event/event_card.dart';
+import '../../shared/app_footer.dart';
 
 class RegisterApplicantPage extends StatefulWidget {
   const RegisterApplicantPage({super.key});
@@ -11,6 +13,9 @@ class RegisterApplicantPage extends StatefulWidget {
 }
 
 class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
+  bool get isDarkMode =>
+      Theme.of(context).brightness == Brightness.dark;
+
   final List<Event> eventos = [
     Event(
       nombre: 'EVENTO PRUEBA FIN',
@@ -41,6 +46,21 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
     );
   }
 
+  void _showModulesMenu() {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (context) => ModulesPanel(
+            isDarkMode: isDarkMode,
+            onModuleTap: (index) {
+              // Acción al seleccionar módulo (opcional)
+            },
+          ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -58,7 +78,10 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        backgroundColor: isDarkMode ? const Color(0xFF161F49) : Theme.of(context).primaryColor,
+        backgroundColor:
+            isDarkMode
+                ? const Color(0xFF161F49)
+                : Theme.of(context).primaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
         actions: [
@@ -70,7 +93,8 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
           ),
         ],
       ),
-      backgroundColor: isDarkMode ? const Color(0xFF030F0F) : const Color(0xFFF5F6FA),
+      backgroundColor:
+          isDarkMode ? const Color(0xFF030F0F) : const Color(0xFFF5F6FA),
       body: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -79,15 +103,24 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
             // Cabecera de sede mejorada
             Card(
               elevation: 2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               color: isDarkMode ? const Color(0xFF1B254B) : Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 18,
+                  horizontal: 18,
+                ),
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor: isDarkMode ? Colors.white12 : Colors.blue[50],
-                      child: const Icon(Icons.location_on, color: Colors.blueAccent),
+                      backgroundColor:
+                          isDarkMode ? Colors.white12 : Colors.blue[50],
+                      child: const Icon(
+                        Icons.location_on,
+                        color: Colors.blueAccent,
+                      ),
                     ),
                     const SizedBox(width: 14),
                     Column(
@@ -111,7 +144,6 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
                       ],
                     ),
                     const Spacer(),
-                  
                   ],
                 ),
               ),
@@ -142,6 +174,18 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: AppFooter(
+        currentIndex: 3,
+        onTap: (index) {
+          if (index == 0) {
+            _showModulesMenu();
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/dashboard');
+          } else if (index == 3) {
+            // Ya estás aquí
+          }
+        },
       ),
     );
   }

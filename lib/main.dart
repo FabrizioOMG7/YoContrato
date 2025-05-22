@@ -1,6 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yo_contrato_app/presentation/pages/register_applicant_page.dart';
 
 // Importaciones del módulo de Stats
 import 'presentation/bloc/stat/stat_cubit.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/dashboard': (context) => const DashboardPage(),
+        'register_applicant': (context) => const RegisterApplicantPage(),
       },
     );
   }
