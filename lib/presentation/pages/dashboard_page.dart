@@ -62,67 +62,77 @@ class _DashboardPageState extends State<DashboardPage>
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color(0xFF161F49) : null,
-        gradient: isDarkMode
-            ? null
-            : LinearGradient(
-                colors: [
-                  AppTheme.primary,
-                  AppTheme.primary.withOpacity(0.85),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(24),
-          bottomRight: Radius.circular(24),
+Widget _buildHeader() {
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 20),
+   // ...en _buildHeader()
+decoration: BoxDecoration(
+  gradient: isDarkMode
+      ? null
+      : const LinearGradient(
+          colors: [Color(0xFFE5E8EF), Color(0xFFF7F8FA)],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  sede,
-                  style: GoogleFonts.openSans(
-                    color: Colors.white70,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
-                  ),
+  color: isDarkMode ? const Color(0xFF23263A) : null,
+  borderRadius: const BorderRadius.only(
+    bottomLeft: Radius.circular(24),
+    bottomRight: Radius.circular(24),
+  ),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black.withOpacity(0.04),
+      blurRadius: 12,
+      offset: const Offset(0, 4),
+    ),
+  ],
+),
+    child: Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                sede,
+                style: GoogleFonts.openSans(
+                  color: isDarkMode ? Colors.white54 : Colors.black45,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  '¡Bienvenido!',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                '¡Bienvenido!',
+                style: GoogleFonts.montserrat(
+                  color: isDarkMode ? Colors.white : Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
                 ),
-                Text(
-                  'YO CONTRATO',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white70,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
-                  ),
+              ),
+              Text(
+                'YO CONTRATO',
+                style: GoogleFonts.montserrat(
+                  color: isDarkMode ? Colors.white38 : Colors.black38,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  letterSpacing: 1.1,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Icon(Icons.notifications_none, color: Colors.white, size: 30),
-        ],
-      ),
-    );
-  }
+        ),
+        Icon(
+          Icons.notifications_none,
+          color: isDarkMode ? Colors.white : Colors.black54,
+          size: 30,
+        ),
+      ],
+    ),
+  );
+}
 
   Widget _buildStatsGrid(StatState state) {
     if (state is StatsLoading) {
