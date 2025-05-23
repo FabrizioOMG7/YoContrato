@@ -12,7 +12,7 @@ class MainNavigationPage extends StatefulWidget {
 }
 
 class _MainNavigationPageState extends State<MainNavigationPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 2;
 
   final List<Widget> _screens = [
     // El orden debe coincidir con el orden de los ítems del navbar
