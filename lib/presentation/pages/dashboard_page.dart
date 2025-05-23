@@ -4,9 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../bloc/stat/stat_cubit.dart';
 import '../widgets/stat_card.dart';
 import '../../core/theme/app_theme.dart';
-import 'register_applicant_page.dart';
-import '../../shared/app_footer.dart';
-import '../../shared/modules_panel.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -17,7 +14,6 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage>
     with SingleTickerProviderStateMixin {
-  int _currentIndex = 2;
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
   bool isDarkMode = false;
@@ -40,20 +36,6 @@ class _DashboardPageState extends State<DashboardPage>
     super.dispose();
   }
 
-  void _showModulesMenu() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => ModulesPanel(
-        isDarkMode: isDarkMode,
-        onModuleTap: (index) {
-          // Acción al seleccionar módulo (opcional)
-        },
-      ),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
-  }
-
   void _showSettingsModal() {
     showModalBottomSheet(
       context: context,
@@ -62,77 +44,76 @@ class _DashboardPageState extends State<DashboardPage>
     );
   }
 
-Widget _buildHeader() {
-  return Container(
-    width: double.infinity,
-    padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 20),
-   // ...en _buildHeader()
-decoration: BoxDecoration(
-  gradient: isDarkMode
-      ? null
-      : const LinearGradient(
-          colors: [Color(0xFFE5E8EF), Color(0xFFF7F8FA)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+  Widget _buildHeader() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 26, horizontal: 20),
+      decoration: BoxDecoration(
+        gradient: isDarkMode
+            ? null
+            : const LinearGradient(
+                colors: [Color(0xFFE5E8EF), Color(0xFFF7F8FA)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+        color: isDarkMode ? const Color(0xFF23263A) : null,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(24),
+          bottomRight: Radius.circular(24),
         ),
-  color: isDarkMode ? const Color(0xFF23263A) : null,
-  borderRadius: const BorderRadius.only(
-    bottomLeft: Radius.circular(24),
-    bottomRight: Radius.circular(24),
-  ),
-  boxShadow: [
-    BoxShadow(
-      color: Colors.black.withOpacity(0.04),
-      blurRadius: 12,
-      offset: const Offset(0, 4),
-    ),
-  ],
-),
-    child: Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                sede,
-                style: GoogleFonts.openSans(
-                  color: isDarkMode ? Colors.white54 : Colors.black45,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                '¡Bienvenido!',
-                style: GoogleFonts.montserrat(
-                  color: isDarkMode ? Colors.white : Colors.black87,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
-                ),
-              ),
-              Text(
-                'YO CONTRATO',
-                style: GoogleFonts.montserrat(
-                  color: isDarkMode ? Colors.white38 : Colors.black38,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                  letterSpacing: 1.1,
-                ),
-              ),
-            ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
-        ),
-        Icon(
-          Icons.notifications_none,
-          color: isDarkMode ? Colors.white : Colors.black54,
-          size: 30,
-        ),
-      ],
-    ),
-  );
-}
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  sede,
+                  style: GoogleFonts.openSans(
+                    color: isDarkMode ? Colors.white54 : Colors.black45,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '¡Bienvenido!',
+                  style: GoogleFonts.montserrat(
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ),
+                ),
+                Text(
+                  'YO CONTRATO',
+                  style: GoogleFonts.montserrat(
+                    color: isDarkMode ? Colors.white38 : Colors.black38,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    letterSpacing: 1.1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            Icons.notifications_none,
+            color: isDarkMode ? Colors.white : Colors.black54,
+            size: 30,
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildStatsGrid(StatState state) {
     if (state is StatsLoading) {
@@ -218,21 +199,6 @@ decoration: BoxDecoration(
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: AppFooter(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          if (index == 0) {
-            _showModulesMenu();
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const RegisterApplicantPage()),
-            );
-          } else {
-            setState(() => _currentIndex = index);
-          }
-        },
       ),
     );
   }

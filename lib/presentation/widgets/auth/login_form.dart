@@ -40,7 +40,7 @@ class _LoginFormState extends State<LoginForm> with SingleTickerProviderStateMix
   }
 
   void _goToDashboard() {
-    Navigator.pushReplacementNamed(context, '/dashboard');
+    Navigator.pushReplacementNamed(context, '/main');
   }
 
   @override

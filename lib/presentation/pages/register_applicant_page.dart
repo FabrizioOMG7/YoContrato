@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yo_contrato_app/shared/modules_panel.dart';
 import '../../domain/entities/event.dart';
 import '../widgets/event/event_card.dart';
-import '../../shared/app_footer.dart';
 
 class RegisterApplicantPage extends StatefulWidget {
   const RegisterApplicantPage({super.key});
@@ -13,9 +11,6 @@ class RegisterApplicantPage extends StatefulWidget {
 }
 
 class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
-  bool get isDarkMode =>
-      Theme.of(context).brightness == Brightness.dark;
-
   final List<Event> eventos = [
     Event(
       nombre: 'EVENTO PRUEBA FIN',
@@ -46,21 +41,6 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
     );
   }
 
-  void _showModulesMenu() {
-    showModalBottomSheet(
-      context: context,
-      builder:
-          (context) => ModulesPanel(
-            isDarkMode: isDarkMode,
-            onModuleTap: (index) {
-              // Acción al seleccionar módulo (opcional)
-            },
-          ),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -79,9 +59,7 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
           overflow: TextOverflow.ellipsis,
         ),
         backgroundColor:
-            isDarkMode
-                ? const Color(0xFF161F49)
-                : Theme.of(context).primaryColor,
+            isDarkMode ? const Color(0xFF161F49) : Theme.of(context).primaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
         actions: [
@@ -174,18 +152,6 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: AppFooter(
-        currentIndex: 3,
-        onTap: (index) {
-          if (index == 0) {
-            _showModulesMenu();
-          } else if (index == 2) {
-            Navigator.pushReplacementNamed(context, '/dashboard');
-          } else if (index == 3) {
-            // Ya estás aquí
-          }
-        },
       ),
     );
   }

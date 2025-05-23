@@ -1,7 +1,6 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yo_contrato_app/presentation/pages/register_applicant_page.dart';
 
 // Importaciones del módulo de Stats
 import 'presentation/bloc/stat/stat_cubit.dart';
@@ -14,9 +13,9 @@ import 'presentation/bloc/auth/auth_bloc.dart'; // AuthBloc
 import 'domain/usecases/login_user.dart'; // LoginUser
 import 'data/repositories/auth_repository_impl.dart'; // AuthRepositoryImpl
 
-import 'presentation/pages/dashboard_page.dart';
 import 'presentation/pages/login_page.dart';
 import 'core/theme/app_theme.dart';
+import 'presentation/pages/main_navigation_page.dart';
 
 void main() {
   // Configura dependencias para StatCubit (si es necesario)
@@ -52,8 +51,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
-        '/dashboard': (context) => const DashboardPage(),
-        'register_applicant': (context) => const RegisterApplicantPage(),
+        '/main': (context) => const MainNavigationPage(),
+        //'register_applicant': (context) => const RegisterApplicantPage(),
       },
     );
   }
