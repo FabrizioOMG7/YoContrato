@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yo_contrato_app/shared/app_navbar.dart';
-import 'package:yo_contrato_app/shared/modules_panel.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/app_navbar.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/modules_panel.dart';
 import 'dashboard_page.dart';
 import 'register_applicant_page.dart';
 
