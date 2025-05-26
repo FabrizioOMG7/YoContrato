@@ -48,7 +48,7 @@ class _ApplicantFormState extends State<ApplicantForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Sede y eventos disponibles (simulado como en tu imagen)
+          // Sede y eventos disponibles 
           Container(
             margin: const EdgeInsets.only(bottom: 18),
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
