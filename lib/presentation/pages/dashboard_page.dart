@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import '../bloc/stat/stat_cubit.dart';
 import '../widgets/stat_card.dart';
 import '../../core/theme/app_theme.dart';
@@ -144,26 +146,23 @@ class _DashboardPageState extends State<DashboardPage>
     return Scaffold(
       backgroundColor:
           isDarkMode ? const Color(0xFF030F0F) : const Color(0xFFF5F6FA),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor:
-            isDarkMode ? const Color(0xFF030F0F) : AppTheme.primary,
-        title: Text(
-          'YO CONTRATO',
-          style: GoogleFonts.merriweather(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            letterSpacing: 1.3,
-          ),
-        ),
-        actions: [
+      appBar: AppTopBar(
+        title: 'YO CONTRATO',
+        actions:[
           IconButton(
-            icon: const Icon(Icons.settings, color: Colors.white),
-            onPressed: _showSettingsModal,
+            icon: Icon(
+              Icons.settings,
+              color: isDarkMode ? Colors.white : const Color.fromARGB(255, 255, 255, 255),
+            ),
+            onPressed: (){
+              _showSettingsModal();
+            }
           ),
         ],
+       // backgroundColor: AppTheme.primary, // O tu color dinámico
+        //textColor: Colors.white,
       ),
+      
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

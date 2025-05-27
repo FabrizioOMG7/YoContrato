@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yo_contrato_app/core/theme/app_theme.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import '../../domain/entities/event.dart';
 import '../widgets/event/event_card.dart';
 
@@ -46,30 +48,22 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Inscripción de postulantes',
-          style: GoogleFonts.montserrat(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 17,
-            letterSpacing: 1.1,
-          ),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        backgroundColor:
-            isDarkMode ? const Color(0xFF161F49) : Theme.of(context).primaryColor,
-        iconTheme: const IconThemeData(color: Colors.white),
-        elevation: 0,
-        actions: [
+      appBar: AppTopBar(
+        title: 'Inscripción de postulantes',
+        titleFontSize: 17,
+        actions:[
           IconButton(
-            icon: const Icon(Icons.settings, color: Colors.white),
-            onPressed: () {
-              // Acción de configuración
-            },
+            icon: Icon(
+              Icons.settings,
+              color: isDarkMode ? Colors.white : const Color.fromARGB(255, 255, 255, 255),
+            ),
+            onPressed: (){
+              
+            }
           ),
         ],
+        //backgroundColor: AppTheme.primary, // O tu color dinámico
+        //textColor: Colors.white,
       ),
       backgroundColor:
           isDarkMode ? const Color(0xFF030F0F) : const Color(0xFFF5F6FA),

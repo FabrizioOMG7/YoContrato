@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -7,6 +8,8 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final Color? backgroundColor;
   final Color? textColor;
+  final double? titleFontSize;
+  final double? subtitleFontSize;
 
   const AppTopBar({
     super.key,
@@ -15,13 +18,15 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.leading,
     this.backgroundColor,
-    this.textColor,
+    this.textColor, 
+    this.titleFontSize,
+    this.subtitleFontSize,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bgColor = backgroundColor ?? theme.colorScheme.primary;
+    final bgColor = backgroundColor ?? theme.primaryColor;
     final fgColor = textColor ?? theme.colorScheme.onPrimary;
 
     return AppBar(
@@ -35,20 +40,24 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             title,
-            style: theme.textTheme.headlineSmall?.copyWith(
+            style: GoogleFonts.montserrat(
               color: fgColor,
               fontWeight: FontWeight.bold,
-              fontSize: 20,
+              fontSize: titleFontSize ?? 20,
               letterSpacing: 1.3,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            softWrap: true,
           ),
+
           if (subtitle != null)
             Text(
               subtitle!,
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 color: fgColor.withOpacity(0.7),
                 fontWeight: FontWeight.w600,
-                fontSize: 13,
+                fontSize: subtitleFontSize ?? 13,
                 letterSpacing: 1.1,
               ),
             ),
