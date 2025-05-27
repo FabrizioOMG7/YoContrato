@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yo_contrato_app/core/theme/app_theme.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/app_settings_button.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import '../../domain/entities/event.dart';
 import '../widgets/event/event_card.dart';
@@ -13,6 +13,7 @@ class RegisterApplicantPage extends StatefulWidget {
 }
 
 class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
+  String sede = 'Chiclayo'; // Sede inicial, puedes cambiarla según tu lógica
   final List<Event> eventos = [
     Event(
       nombre: 'EVENTO PRUEBA FIN',
@@ -50,17 +51,21 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
     return Scaffold(
       appBar: AppTopBar(
         title: 'Inscripción de postulantes',
-        titleFontSize: 17,
+        
         actions:[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: isDarkMode ? Colors.white : const Color.fromARGB(255, 255, 255, 255),
-            ),
-            onPressed: (){
-              
-            }
-          ),
+          SettingsButton(
+            isDarkMode: isDarkMode,
+            sede: sede, 
+            onSedeChanged: (newSede) {  
+              setState(() {
+                sede = newSede;
+              });
+            }, 
+            onLogout: () {  
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+            
+          )
         ],
         //backgroundColor: AppTheme.primary, // O tu color dinámico
         //textColor: Colors.white,
@@ -106,7 +111,7 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
                           ),
                         ),
                         Text(
-                          'CHICLAYO',
+                          sede.toUpperCase(),
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.bold,
                             fontSize: 17,

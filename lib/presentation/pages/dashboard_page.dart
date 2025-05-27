@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/app_settings_button.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import '../bloc/stat/stat_cubit.dart';
 import '../widgets/stat_card.dart';
@@ -18,7 +19,7 @@ class _DashboardPageState extends State<DashboardPage>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
-  bool isDarkMode = false;
+  bool isDarkMode = false; //Esto lo manejaré luego manualmente, por ahora es un ejemplo
   String sede = "Chiclayo";
 
   @override
@@ -36,14 +37,6 @@ class _DashboardPageState extends State<DashboardPage>
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  void _showSettingsModal() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => _buildSettingsPanel(),
-    );
   }
 
   Widget _buildHeader() {
@@ -149,15 +142,18 @@ class _DashboardPageState extends State<DashboardPage>
       appBar: AppTopBar(
         title: 'YO CONTRATO',
         actions:[
-          IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: isDarkMode ? Colors.white : const Color.fromARGB(255, 255, 255, 255),
-            ),
-            onPressed: (){
-              _showSettingsModal();
-            }
-          ),
+          SettingsButton(
+            isDarkMode: isDarkMode,
+             sede: sede, 
+             onSedeChanged: (newSede){
+              setState(() {
+                sede = newSede;
+              });
+             },
+              onLogout: () {  
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+          )
         ],
        // backgroundColor: AppTheme.primary, // O tu color dinámico
         //textColor: Colors.white,
@@ -202,100 +198,4 @@ class _DashboardPageState extends State<DashboardPage>
     );
   }
 
-  // Panel de configuración
-  Widget _buildSettingsPanel() {
-    final textColor = isDarkMode ? Colors.white : Colors.black87;
-    final iconColor = isDarkMode ? Colors.white : AppTheme.primary;
-    return SafeArea(
-      child: Container(
-        decoration: BoxDecoration(
-          color: isDarkMode ? const Color(0xFF030F0F) : Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 18),
-              decoration: BoxDecoration(
-                color: Colors.grey[400],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.location_on, color: iconColor),
-              title: Text(
-                "Cambiar sede",
-                style: GoogleFonts.montserrat(
-                  color: textColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              trailing: DropdownButton<String>(
-                dropdownColor:
-                    isDarkMode ? const Color(0xFF161F49) : Colors.white,
-                value: sede,
-                underline: const SizedBox(),
-                style: GoogleFonts.montserrat(color: textColor),
-                items: const [
-                  DropdownMenuItem(value: "Chiclayo", child: Text("Chiclayo")),
-                  DropdownMenuItem(value: "Lima", child: Text("Lima")),
-                  DropdownMenuItem(value: "Arequipa", child: Text("Arequipa")),
-                  DropdownMenuItem(value: "Trujillo", child: Text("Trujillo")),
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      sede = value;
-                    });
-                    Navigator.pop(context);
-                  }
-                },
-              ),
-            ),
-            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
-            SwitchListTile(
-              secondary: Icon(
-                isDarkMode ? Icons.nightlight_round : Icons.wb_sunny_outlined,
-                color: iconColor,
-              ),
-              title: Text(
-                "Tema",
-                style: GoogleFonts.montserrat(
-                  color: textColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              value: isDarkMode,
-              onChanged: (value) {
-                setState(() {
-                  isDarkMode = value;
-                });
-                Navigator.pop(context);
-              },
-              activeColor: Colors.white,
-            ),
-            Divider(color: isDarkMode ? Colors.white24 : Colors.grey[300]),
-            ListTile(
-              leading: Icon(Icons.logout, color: iconColor),
-              title: Text(
-                "Salir",
-                style: GoogleFonts.montserrat(
-                  color: textColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/login');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+    }

@@ -40,10 +40,10 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Text(
             title,
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.poppins(
               color: fgColor,
               fontWeight: FontWeight.bold,
-              fontSize: titleFontSize ?? 20,
+              fontSize: titleFontSize ?? 18,
               letterSpacing: 1.3,
             ),
             maxLines: 2,
