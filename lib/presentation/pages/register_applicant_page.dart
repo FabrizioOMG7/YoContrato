@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yo_contrato_app/presentation/pages/applicant_search_page.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_settings_button.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import '../../domain/entities/event.dart';
@@ -49,9 +50,12 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
   ];
 
   void _onRegisterPressed(Event evento) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Registrar postulante para "${evento.nombre}"')),
-    );
+   Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ApplicantSearchPage(sede: sede),
+    ),
+  );
   }
 
   @override
