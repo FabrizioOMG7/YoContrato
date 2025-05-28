@@ -60,7 +60,7 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
 
     return Scaffold(
       appBar: AppTopBar(
-        title: 'Inscripción de postulantes',
+        title: 'INSCRIPCIÓN DE POSTULANTES',
         actions: [
           SettingsButton(
             isDarkMode: isDarkMode,
@@ -276,7 +276,7 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
             Expanded(
               child: ListView.separated(
                 itemCount: eventos.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12), // Separación consistente
+                separatorBuilder: (context, index) => const SizedBox(height: 2), // Separación consistente
                 itemBuilder: (context, index) {
                   final evento = eventos[index];
                   return EventCard(
