@@ -135,7 +135,7 @@ class _EventCardState extends State<EventCard> {
                         ),
                         Expanded(
                           child: Text(
-                            'T.FIPE: ${widget.event.tipoFipe.toUpperCase()}',
+                            'T.YoContrato: ${widget.event.tipoYoContrato.toUpperCase()}',
                             style: TextStyle(color: secondaryColor),
                           ),
                         ),

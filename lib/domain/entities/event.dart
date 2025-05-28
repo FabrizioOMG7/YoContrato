@@ -4,7 +4,7 @@ class Event {
   final String sede;
   final String areaCargo;
   final String cultivo;
-  final String tipoFipe;
+  final String tipoYoContrato;
   final int requerimientos;
   final int totalAvance;
 
@@ -14,7 +14,7 @@ class Event {
     required this.sede,
     required this.areaCargo,
     required this.cultivo,
-    required this.tipoFipe,
+    required this.tipoYoContrato,
     required this.requerimientos,
     required this.totalAvance,
   });
