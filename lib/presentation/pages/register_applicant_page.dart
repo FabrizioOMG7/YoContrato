@@ -5,6 +5,7 @@ import 'package:yo_contrato_app/presentation/widgets/shared/app_settings_button.
 import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import '../../domain/entities/event.dart';
 import '../widgets/event/event_card.dart';
+import '../widgets/shared/info_card.dart';
 
 class RegisterApplicantPage extends StatefulWidget {
   const RegisterApplicantPage({super.key});
@@ -50,12 +51,12 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
   ];
 
   void _onRegisterPressed(Event evento) {
-   Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ApplicantSearchPage(sede: sede),
-    ),
-  );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ApplicantSearchPage(sede: sede),
+      ),
+    );
   }
 
   @override
@@ -87,140 +88,15 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header de sede completamente rediseñado con estética moderna tipo Instagram/Threads
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.only(bottom: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20), // Bordes más redondeados tipo iOS
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04), // Sombra muy sutil
-                    blurRadius: 12,
-                    offset: const Offset(0, 2),
-                    spreadRadius: 0,
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.02), // Segunda sombra para profundidad
-                    blurRadius: 6,
-                    offset: const Offset(0, 1),
-                    spreadRadius: 0,
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(24), // Padding generoso tipo Instagram
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Indicador visual minimalista inspirado en Material 3 y apps modernas
-                    Container(
-                      height: 56,
-                      width: 56,
-                      decoration: BoxDecoration(
-                        // Gradiente sofisticado inspirado en Instagram
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF667EEA), // Azul suave
-                            Color(0xFF764BA2), // Púrpura elegante
-                          ],
-                          stops: [0.0, 1.0],
-                        ),
-                        borderRadius: BorderRadius.circular(16), // Bordes suaves
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF667EEA).withOpacity(0.25),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.location_on_rounded, // Ícono más moderno y redondeado
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 20), // Espaciado generoso
-                    
-                    // Información de sede con tipografía refinada
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Label superior con estilo moderno
-                          Text(
-                            'Sede principal',
-                            style: GoogleFonts.inter( // Cambiado a Inter por su modernidad
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xFF6B7280), // Gris moderno
-                              letterSpacing: 0.1,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          // Nombre de sede con tipografía premium
-                          Text(
-                            sede.toUpperCase(),
-                            style: GoogleFonts.inter(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700, // Bold pero no excesivo
-                              color: const Color(0xFF111827), // Negro profundo pero no puro
-                              letterSpacing: 0.3,
-                              height: 1.1, // Line height optimizado
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    
-                    // Elemento decorativo sutil (inspirado en badges de Instagram)
-                    /*Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF3F4F6), // Gris muy claro
-                        borderRadius: BorderRadius.circular(20), // Completamente redondeado
-                        border: Border.all(
-                          color: const Color(0xFFE5E7EB), // Borde sutil
-                          width: 1,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFF10B981), // Verde moderno
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            'Online',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: const Color(0xFF374151),
-                            ),
-                          ),
-                        ],
-                      ), 
-                    ), */
-                  ],
-                ),
-              ),
+            // InfoCard reutilizable para sede principal
+            InfoCard(
+              icon: const Icon(Icons.location_on_rounded, color: Colors.white, size: 28),
+              items: [
+                InfoCardItem(label: 'Sede principal', value: sede.toUpperCase()),
+              ],
             ),
-            
             const SizedBox(height: 24), // Espaciado aumentado para mejor respiración
-            
+
             // Sección de eventos con header mejorado
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -273,9 +149,9 @@ class _RegisterApplicantPageState extends State<RegisterApplicantPage> {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Lista de eventos con separación optimizada
             Expanded(
               child: ListView.separated(
