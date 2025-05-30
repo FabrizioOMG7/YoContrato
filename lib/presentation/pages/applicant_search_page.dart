@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/info_Card.dart';
 import '../widgets/shared/app_topbar.dart';
 import '../widgets/shared/app_settings_button.dart';
 
@@ -195,121 +196,20 @@ class _ApplicantSearchPageState extends State<ApplicantSearchPage>
   
   /// Construye el encabezado de información de sede
   /// Diseño inspirado en LinkedIn y aplicaciones profesionales
-  Widget _buildSedeHeader() {
-    return SlideTransition(
-      position: _slideAnimation,
-      child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.only(bottom: 24),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFFFFFFF),
-              Color(0xFFFAFBFC),
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF667EEA).withOpacity(0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-              spreadRadius: 0,
-            ),
-            BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 10,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Row(
-            children: [
-              // Indicador visual con animación - Inspirado en Material Design 3
-              Container(
-                height: 64,
-                width: 64,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF667EEA),
-                      Color(0xFF764BA2),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF667EEA).withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.business_rounded,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 20),
-              
-              // Información de sede con tipografía moderna
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Sede de trabajo',
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF6B7280),
-                        letterSpacing: 0.1,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      widget.sede.toUpperCase(),
-                      style: GoogleFonts.inter(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFF111827),
-                        letterSpacing: -0.2,
-                        height: 1.1,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF10B981).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        'ACTIVA',
-                        style: GoogleFonts.inter(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF10B981),
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+Widget _buildSedeHeader() {
+  return SlideTransition(
+    position: _slideAnimation,
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: InfoCard(
+        icon: const Icon(Icons.location_on_rounded, color: Colors.white, size: 28),
+        items: [
+          InfoCardItem(label: 'Sede principal', value: widget.sede.toUpperCase()),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
   
   /// Construye la sección de búsqueda principal
   /// Diseño inspirado en WhatsApp y Telegram para una UX familiar
