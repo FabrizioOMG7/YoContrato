@@ -144,12 +144,12 @@ class _DashboardPageState extends State<DashboardPage>
         actions:[
           SettingsButton(
             isDarkMode: isDarkMode,
-             sede: sede, 
-             onSedeChanged: (newSede){
+            sede: sede, 
+            onSedeChanged: (newSede){
               setState(() {
                 sede = newSede;
               });
-             },
+            },
               onLogout: () {  
                 Navigator.pushReplacementNamed(context, '/login');
               },
