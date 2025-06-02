@@ -4,6 +4,7 @@ import 'package:yo_contrato_app/presentation/widgets/shared/modules_panel.dart';
 import 'dashboard_page.dart';
 import 'register_applicant_page.dart';
 
+
 class MainNavigationPage extends StatefulWidget {
   const MainNavigationPage({super.key});
 
@@ -16,8 +17,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   final List<Widget> _screens = [
     // El orden debe coincidir con el orden de los ítems del navbar
-    DashboardPage(),           // Menú
     Container(),               // Buscar (puedes poner tu página de búsqueda)
+    Container(),           // Menú
     DashboardPage(),           // Inicio (puedes cambiar por otra página principal)
     RegisterApplicantPage(),   // Agregar
     Container(),               // Sincronizar (puedes poner tu página de sincronización)
