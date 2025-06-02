@@ -181,13 +181,13 @@ class _EventCardState extends State<EventCard> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Cultivo: ${widget.event.cultivo}',
+                                  'CULTIVO: ${widget.event.cultivo}',
                                   style: TextStyle(color: secondaryColor),
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  'T.YoContrato: ${widget.event.tipoYoContrato.toUpperCase()}',
+                                  'T.YOCONTRATO: ${widget.event.tipoYoContrato.toUpperCase()}',
                                   style: TextStyle(color: secondaryColor),
                                 ),
                               ),
@@ -198,13 +198,13 @@ class _EventCardState extends State<EventCard> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Requerimientos: ${widget.event.requerimientos}',
+                                  'REQUERIMIENTOS: ${widget.event.requerimientos}',
                                   style: TextStyle(color: secondaryColor),
                                 ),
                               ),
                               Expanded(
                                 child: Text(
-                                  'Avance: ${widget.event.totalAvance}',
+                                  'AVANCE: ${widget.event.totalAvance}',
                                   style: TextStyle(color: secondaryColor),
                                 ),
                               ),

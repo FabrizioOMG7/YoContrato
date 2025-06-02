@@ -36,13 +36,11 @@ class _ApplicantSearchPageState extends State<ApplicantSearchPage>
   final TextEditingController _dniController = TextEditingController();
   
   /// Controlador de animaciones para efectos visuales suaves
-  /// Mejora la experiencia del usuario con transiciones profesionales
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   
   /// Estado de carga para feedback visual al usuario
-  /// Principio: Feedback inmediato inspirado en apps como Instagram/WhatsApp
   bool _isSearching = false;
   
   /// Foco del campo de búsqueda para control de teclado
@@ -56,8 +54,7 @@ class _ApplicantSearchPageState extends State<ApplicantSearchPage>
     _initializeAnimations();
   }
 
-  /// Inicialización de animaciones siguiendo principios de UX modernos
-  /// Inspirado en las transiciones suaves de aplicaciones como Telegram y Discord
+  /// Inicialización de animaciones 
   void _initializeAnimations() {
     _animationController = AnimationController(
       vsync: this,
@@ -137,7 +134,7 @@ class _ApplicantSearchPageState extends State<ApplicantSearchPage>
 
   // === MÉTODOS DE UI/UX ===
   
-  /// Muestra mensaje de error con diseño Material 3
+  /// Muestra mensaje de error 
   void _showValidationError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -195,7 +192,6 @@ class _ApplicantSearchPageState extends State<ApplicantSearchPage>
   // === WIDGETS DE CONSTRUCCIÓN ===
   
   /// Construye el encabezado de información de sede
-  /// Diseño inspirado en LinkedIn y aplicaciones profesionales
 Widget _buildSedeHeader() {
   return SlideTransition(
     position: _slideAnimation,
@@ -212,7 +208,6 @@ Widget _buildSedeHeader() {
 }
   
   /// Construye la sección de búsqueda principal
-  /// Diseño inspirado en WhatsApp y Telegram para una UX familiar
   Widget _buildSearchSection() {
     return FadeTransition(
       opacity: _fadeAnimation,
@@ -380,7 +375,6 @@ Widget _buildSedeHeader() {
   }
   
   /// Construye la sección del código QR
-  /// Diseño inspirado en aplicaciones de mensajería instantánea
   Widget _buildQRSection() {
     return SlideTransition(
       position: _slideAnimation,
@@ -544,7 +538,7 @@ Widget _buildSedeHeader() {
         ],
       ),
       
-      // Fondo con color suave y profesional
+      // Fondo con color suave 
       backgroundColor: const Color(0xFFF8FAFC),
       
       // Cuerpo principal con scroll y padding responsivo
