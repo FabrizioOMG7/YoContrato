@@ -17,7 +17,8 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   final List<Widget> _screens = [
     // El orden debe coincidir con el orden de los ítems del navbar
-    Container(),               // Buscar (puedes poner tu página de búsqueda)
+    Container(),
+    //const SearchApplicantPage(),               // Buscar (puedes poner tu página de búsqueda)
     Container(),           // Menú
     DashboardPage(),           // Inicio (puedes cambiar por otra página principal)
     RegisterApplicantPage(),   // Agregar
