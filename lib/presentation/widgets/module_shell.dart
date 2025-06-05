@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/modules/module_type.dart';
-import 'package:yo_contrato_app/presentation/pages/gestion_de_contratos/gestion_de_contratos_list_page.dart';
+import 'package:yo_contrato_app/presentation/pages/gestion_de_contratos/contract_management_page.dart';
 import 'package:yo_contrato_app/presentation/pages/gestion_de_contratos/gestion_de_contratos_search_page.dart';
 import 'package:yo_contrato_app/presentation/pages/gestion_de_contratos_detail_page.dart';
 
