@@ -393,10 +393,12 @@ class QRSection extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             qrTitle,
+            textAlign: TextAlign.center,
             style: GoogleFonts.inter(
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: const Color(0xFF6B7280),
+              
             ),
           ),
         ],
