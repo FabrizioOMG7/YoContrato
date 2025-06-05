@@ -287,7 +287,7 @@ class _EventListState extends State<EventList> {
     setState(() {
       for (int i = 0; i < widget.eventos.length; i++) {
         _expansionStates[i] = shouldExpand;
-      }
+      } 
     });
   }
 

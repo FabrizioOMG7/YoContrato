@@ -1,9 +1,6 @@
-// lib/domain/modules/module_type.dart
-/// Enum que lista todos los módulos donde se reutilizará el widget de búsqueda.
-/// Cada valor representa una pantalla o sección distinta de la app.
+import 'package:flutter/material.dart';
 
-enum ModuleType{
-
+enum ModuleType {
   GESTION_DE_POSTULACIONES,
   RECLUTAMIENTO,
   FICHA_MEDICA,
@@ -12,6 +9,53 @@ enum ModuleType{
   GESTION_DE_CONTRATOS,
   FIRMA_DE_DOCUMENTOS,
   VALIDACION_Y_FOTOCHECK,
-  DESISTIMIENTO,  
+  DESISTIMIENTO,
+}
 
+extension ModuleTypeExtension on ModuleType {
+  String get displayName {
+    switch (this) {
+      case ModuleType.GESTION_DE_POSTULACIONES:
+        return 'Gestión de Postulaciones';
+      case ModuleType.RECLUTAMIENTO:
+        return 'Reclutamiento';
+      case ModuleType.FICHA_MEDICA:
+        return 'Ficha Médica';
+      case ModuleType.BBS:
+        return 'BBS';
+      case ModuleType.FOTOGRAFIA:
+        return 'Fotografía';
+      case ModuleType.GESTION_DE_CONTRATOS:
+        return 'Gestión de Contratos';
+      case ModuleType.FIRMA_DE_DOCUMENTOS:
+        return 'Firma de Documentos';
+      case ModuleType.VALIDACION_Y_FOTOCHECK:
+        return 'Validación y Fotocheck';
+      case ModuleType.DESISTIMIENTO:
+        return 'Desistimiento';
+    }
+  }
+
+  IconData get icon {
+    switch (this) {
+      case ModuleType.GESTION_DE_POSTULACIONES:
+        return Icons.assignment_ind;
+      case ModuleType.RECLUTAMIENTO:
+        return Icons.people;
+      case ModuleType.FICHA_MEDICA:
+        return Icons.local_hospital;
+      case ModuleType.BBS:
+        return Icons.security;
+      case ModuleType.FOTOGRAFIA:
+        return Icons.photo_camera;
+      case ModuleType.GESTION_DE_CONTRATOS:
+        return Icons.description;
+      case ModuleType.FIRMA_DE_DOCUMENTOS:
+        return Icons.draw;
+      case ModuleType.VALIDACION_Y_FOTOCHECK:
+        return Icons.badge;
+      case ModuleType.DESISTIMIENTO:
+        return Icons.person_off;
+    }
+  }
 }

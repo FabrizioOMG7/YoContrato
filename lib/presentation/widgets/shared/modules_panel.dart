@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'modules_data.dart';
+import 'package:yo_contrato_app/domain/modules/module_type.dart';
 
 class ModulesPanel extends StatelessWidget {
   final bool isDarkMode;
-  final void Function(int index)? onModuleTap;
+  final Function(int) onModuleTap;
 
   const ModulesPanel({
     super.key,
     required this.isDarkMode,
-    this.onModuleTap,
+    required this.onModuleTap,
   });
 
   @override
@@ -22,6 +22,7 @@ class ModulesPanel extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Barra indicadora de arrastre
           Container(
             width: 40,
             height: 4,
@@ -31,6 +32,7 @@ class ModulesPanel extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
+          // Grilla de módulos
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -40,14 +42,11 @@ class ModulesPanel extends StatelessWidget {
               mainAxisSpacing: 16,
               childAspectRatio: 2.8,
             ),
-            itemCount: appModules.length,
+            itemCount: ModuleType.values.length,
             itemBuilder: (context, index) {
-              final module = appModules[index];
+              final module = ModuleType.values[index];
               return GestureDetector(
-                onTap: () {
-                  if (onModuleTap != null) onModuleTap!(index);
-                  Navigator.pop(context);
-                },
+                onTap: () => onModuleTap(index),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   decoration: BoxDecoration(
@@ -60,18 +59,21 @@ class ModulesPanel extends StatelessWidget {
                     children: [
                       Icon(
                         module.icon,
-                        color: isDarkMode ? Colors.white : Theme.of(context).primaryColor,
+                        color: isDarkMode
+                            ? Colors.white
+                            : Theme.of(context).primaryColor,
                         size: 22,
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          module.name,
-                          textAlign: TextAlign.left,
+                          module.displayName,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: isDarkMode ? Colors.white : Theme.of(context).primaryColor,
+                            color: isDarkMode
+                                ? Colors.white
+                                : Theme.of(context).primaryColor,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
