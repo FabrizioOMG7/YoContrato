@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/modules/module_type.dart';
-import 'package:yo_contrato_app/presentation/pages/gestion_de_contratos/gestion_de_contratos_list_page.dart';
 import 'package:yo_contrato_app/presentation/widgets/module_shell.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_navbar.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/modules_panel.dart';
