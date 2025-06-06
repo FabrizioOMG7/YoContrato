@@ -1,6 +1,6 @@
-// lib/presentation/pages/gestion_de_contratos/contract_management_page.dart
-
 import 'package:flutter/material.dart';
+import 'package:yo_contrato_app/domain/navigation/nav_item.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/app_navbar.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_settings_button.dart';
 import 'package:yo_contrato_app/core/theme/app_theme.dart';
@@ -14,62 +14,39 @@ class ContractManagementPage extends StatefulWidget {
 }
 
 class _ContractManagementPageState extends State<ContractManagementPage> {
-  String sede = 'C5 NORTE';
-  bool isDarkMode = false;
-
-  // Lista mockup de contratos
-  final List<ContractItem> contratos = [
+  // Estado local
+  String _sede = 'C5 NORTE';
+  int _currentIndex = NavItem.HOME.index;
+  
+  // Lista mockup de contratos (esto debería venir de un repository)
+  final List<ContractItem> _contratos = [
     const ContractItem(
       nombre: 'RAMIREZ CARLOS MARTIN',
       dni: '46882447',
       evento: 'EVENTO PRUEBA FIN',
       fechaHora: '22/04/2025 - 00:12:13',
     ),
-    const ContractItem(
-      nombre: 'RAMIREZ CARLOS MARTIN',
-      dni: '46882447',
-      evento: 'EVENTO PRUEBA FIN',
-      fechaHora: '22/04/2025 - 00:12:13',
-    ),
-    const ContractItem(
-      nombre: 'RAMIREZ CARLOS MARTIN',
-      dni: '46882447',
-      evento: 'EVENTO PRUEBA FIN',
-      fechaHora: '22/04/2025 - 00:12:13',
-    ),
-    const ContractItem(
-      nombre: 'RAMIREZ CARLOS MARTIN',
-      dni: '46882447',
-      evento: 'EVENTO PRUEBA FIN',
-      fechaHora: '22/04/2025 - 00:12:13',
-    ),
-    const ContractItem(
-      nombre: 'RAMIREZ CARLOS MARTIN',
-      dni: '46882447',
-      evento: 'EVENTO PRUEBA FIN',
-      fechaHora: '22/04/2025 - 00:12:13',
-    ),
-    const ContractItem(
-      nombre: 'RAMIREZ CARLOS MARTIN',
-      dni: '46882447',
-      evento: 'EVENTO PRUEBA FIN',
-      fechaHora: '22/04/2025 - 00:12:13',
-    ),
+    // ... otros contratos
   ];
 
+  // Handlers
+  void _onNavBarTap(int index) {
+    if (index == NavItem.MENU.index) {
+      Navigator.pop(context);
+    } else {
+      setState(() => _currentIndex = index);
+    }
+  }
+
+  void _onSedeChanged(String newSede) {
+    setState(() => _sede = newSede);
+  }
+
+  void _onLogout() {
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
   void _onTapBuscar(ContractItem contrato) {
-    // TODO: Implementar navegación a búsqueda de postulantes
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => ApplicantSearchPage(
-    //       sede: sede,
-    //       contractItem: contrato,
-    //     ),
-    //   ),
-    // );
-    
-    // Por ahora, mostrar un SnackBar
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Buscar postulante para: ${contrato.nombre}'),
@@ -88,15 +65,9 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
         actions: [
           SettingsButton(
             isDarkMode: isDarkMode,
-            sede: sede,
-            onSedeChanged: (newSede) {
-              setState(() {
-                sede = newSede;
-              });
-            },
-            onLogout: () {
-              Navigator.pushReplacementNamed(context, '/login');
-            },
+            sede: _sede,
+            onSedeChanged: _onSedeChanged,
+            onLogout: _onLogout,
           ),
         ],
         backgroundColor: AppTheme.primary,
@@ -106,9 +77,13 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
           ? const Color(0xFF030F0F) 
           : const Color(0xFFF5F6FA),
       body: ContractManagementContent(
-        sede: sede,
-        contratos: contratos,
+        sede: _sede,
+        contratos: _contratos,
         onTapBuscar: _onTapBuscar,
+      ),
+      bottomNavigationBar: AppNavBar(
+        currentIndex: _currentIndex,
+        onTap: _onNavBarTap,
       ),
     );
   }
