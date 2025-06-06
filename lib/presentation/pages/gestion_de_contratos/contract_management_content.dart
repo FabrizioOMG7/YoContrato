@@ -75,8 +75,8 @@ class ContractManagementContent extends StatelessWidget {
   }
 }
 
-/// Tarjeta que muestra cada contrato y un botón para “Buscar Postulante”.
-/// Al presionar la lupa, invoca onTapBuscar.
+/// Tarjeta que muestra cada contrato y un botón para "Buscar Postulante".
+/// Al presionar el ícono de búsqueda, invoca onTapBuscar.
 class ContractCard extends StatelessWidget {
   final ContractItem contract;
   final VoidCallback onTapBuscar;
@@ -157,7 +157,7 @@ class ContractCard extends StatelessWidget {
             ),
           ),
 
-          // Botón “Buscar Postulante”
+          // Botón "Buscar Postulante" con ícono de lupa
           Container(
             width: 40,
             height: 40,
@@ -175,7 +175,7 @@ class ContractCard extends StatelessWidget {
                 onTap: onTapBuscar,
                 borderRadius: BorderRadius.circular(10),
                 child: const Icon(
-                  Icons.search_outlined,
+                  Icons.edit,
                   color: Color(0xFF667EEA),
                   size: 20,
                 ),
