@@ -16,27 +16,48 @@ class MainNavigationPage extends StatefulWidget {
 
 class _MainNavigationPageState extends State<MainNavigationPage> {
   int _currentIndex = NavItem.HOME.index;
-  bool _isInContractManagement = false;
+  int? _activeModuleScreenIndex;
 
-  final List<Widget> _screens = [
-    Container(), // MENU
-    Container(), // SEARCH
-    const DashboardPage(), // HOME
-    const RegisterApplicantPage(), // ADD_PERSON
-    Container(), // SYNC
+  /// Pantallas “normales” (índices 0 a 4)
+  final List<Widget> _screensNormal = [
+    Container(),                   // índice 0: MENU (abre panel)
+    Container(),                   // índice 1: SEARCH (placeholder)
+    const DashboardPage(),         // índice 2: HOME
+    const RegisterApplicantPage(), // índice 3: ADD_PERSON
+    Container(),                   // índice 4: SYNC (placeholder)
+  ];
+
+  /// Pantallas totales: normales + módulo en posición 5.
+  late final List<Widget> _screensTotal = [
+    ..._screensNormal,
+    ContractManagementPage(onBack: _exitContractManagement), // índice 5
   ];
 
   void _onNavBarTap(int index) {
-    if (index == NavItem.MENU.index && !_isInContractManagement) {
-      _showModulesPanel();
-    } else {
-      setState(() {
-        _currentIndex = index;
-        if (index != NavItem.MENU.index) {
-          _isInContractManagement = false;
-        }
-      });
+    // 1) Si NO hay módulo activo, comportamiento normal:
+    if (_activeModuleScreenIndex == null) {
+      if (index == NavItem.MENU.index) {
+        _showModulesPanel();
+      } else {
+        setState(() {
+          _currentIndex = index;
+        });
+      }
+      return;
     }
+
+    // 2) Si SÍ hay módulo activo:
+    //    - Si tocan “Menú” (índice 0), NO SALIMOS del módulo (ignoramos).
+    if (index == NavItem.MENU.index) {
+      return;
+    }
+
+    //    - Si tocan CUALQUIER OTRO ícono (SEARCH=1, HOME=2, ADD_PERSON=3, SYNC=4),
+    //      SALIMOS del módulo y vamos a esa pestaña normal:
+    setState(() {
+      _activeModuleScreenIndex = null;
+      _currentIndex = index;
+    });
   }
 
   void _showModulesPanel() {
@@ -44,37 +65,22 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       context: context,
       builder: (context) => ModulesPanel(
         isDarkMode: Theme.of(context).brightness == Brightness.dark,
-        onModuleTap: (moduleIndex) => _onModuleSelected(moduleIndex, context),
+        onModuleTap: (moduleIndex) => _onModuleSelected(moduleIndex),
       ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
     );
   }
 
-  void _onModuleSelected(int moduleIndex, BuildContext modalContext) {
+  void _onModuleSelected(int moduleIndex) {
     final module = ModuleType.values[moduleIndex];
-    Navigator.pop(modalContext);
-    
+    Navigator.pop(context); // cerramos el panel
+
     if (module == ModuleType.GESTION_DE_CONTRATOS) {
       setState(() {
-        _currentIndex = NavItem.MENU.index;
-        _isInContractManagement = true;
+        _activeModuleScreenIndex = 5;       // índice en _screensTotal
+        _currentIndex = NavItem.MENU.index; // forzamos que marque “Menú”
       });
-      
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ContractManagementPage(
-            onBack: () {
-              setState(() {
-                _currentIndex = NavItem.HOME.index;
-                _isInContractManagement = false;
-              });
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -85,28 +91,34 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
     }
   }
 
+  void _exitContractManagement() {
+    setState(() {
+      _activeModuleScreenIndex = null;
+      _currentIndex = NavItem.HOME.index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_currentIndex != NavItem.HOME.index || _isInContractManagement) {
-          setState(() {
-            _currentIndex = NavItem.HOME.index;
-            _isInContractManagement = false;
-          });
+        if (_activeModuleScreenIndex != null) {
+          _exitContractManagement();
           return false;
         }
         return true;
       },
       child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _screens,
-        ),
+        body: _activeModuleScreenIndex != null
+            ? _screensTotal[_activeModuleScreenIndex!]
+            : IndexedStack(
+                index: _currentIndex,
+                children: _screensNormal,
+              ),
         bottomNavigationBar: AppNavBar(
           currentIndex: _currentIndex,
           onTap: _onNavBarTap,
-          isInContractManagement: _isInContractManagement,
+          isInContractManagement: _activeModuleScreenIndex != null,
         ),
       ),
     );

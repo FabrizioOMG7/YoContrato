@@ -7,16 +7,16 @@ class AppNavBar extends StatelessWidget {
   final bool isInContractManagement;
 
   const AppNavBar({
-    super.key,
+    Key? key,
     required this.currentIndex,
     required this.onTap,
     this.isInContractManagement = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final primary = Theme.of(context).primaryColor;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -29,19 +29,32 @@ class AppNavBar extends StatelessWidget {
         ],
       ),
       child: BottomNavigationBar(
-        currentIndex: isInContractManagement ? NavItem.MENU.index : currentIndex,
-        onTap: onTap,
+        // Mientras estemos en Contratos, forzamos que “Menú” (índice 0) aparezca seleccionado.
+        currentIndex: isInContractManagement 
+            ? NavItem.MENU.index 
+            : currentIndex,
+        onTap: (index) {
+          // Si estamos en Contratos y tocan “Menú”, lo ignoramos.
+          if (isInContractManagement && index == NavItem.MENU.index) {
+            return;
+          }
+          // En cualquier otro caso (SEARCH, HOME, ADD_PERSON, SYNC),
+          // incluso estando en módulo, propagamos el tap a MainNavigationPage.
+          onTap(index);
+        },
         type: BottomNavigationBarType.shifting,
         backgroundColor: Colors.white,
         selectedItemColor: primary,
         unselectedItemColor: primary.withOpacity(0.55),
         showUnselectedLabels: false,
         elevation: 0,
-        items: NavItem.values.map((item) => BottomNavigationBarItem(
-          icon: Icon(item.icon),
-          label: item.label,
-          backgroundColor: Colors.white,
-        )).toList(),
+        items: NavItem.values.map((item) {
+          return BottomNavigationBarItem(
+            icon: Icon(item.icon),
+            label: item.label,
+            backgroundColor: Colors.white,
+          );
+        }).toList(),
       ),
     );
   }

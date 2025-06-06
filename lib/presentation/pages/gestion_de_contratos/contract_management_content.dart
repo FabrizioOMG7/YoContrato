@@ -157,7 +157,7 @@ class ContractCard extends StatelessWidget {
             ),
           ),
 
-          // Botón "Buscar Postulante" con ícono de lupa
+          // Botón "editar Postulante" con ícono de lupa
           Container(
             width: 40,
             height: 40,
