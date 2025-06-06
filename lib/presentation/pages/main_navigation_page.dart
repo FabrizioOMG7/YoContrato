@@ -27,12 +27,14 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   ];
 
   void _onNavBarTap(int index) {
-    if (index == NavItem.MENU.index) {
+    if (index == NavItem.MENU.index && !_isInContractManagement) {
       _showModulesPanel();
     } else {
       setState(() {
         _currentIndex = index;
-        _isInContractManagement = false;
+        if (index != NavItem.MENU.index) {
+          _isInContractManagement = false;
+        }
       });
     }
   }
@@ -51,44 +53,36 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   void _onModuleSelected(int moduleIndex, BuildContext modalContext) {
     final module = ModuleType.values[moduleIndex];
-    
-    // Cerramos el modal
     Navigator.pop(modalContext);
     
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
+    if (module == ModuleType.GESTION_DE_CONTRATOS) {
+      setState(() {
+        _currentIndex = NavItem.MENU.index;
+        _isInContractManagement = true;
+      });
       
-      if (module == ModuleType.GESTION_DE_CONTRATOS) {
-        // Actualizamos el estado para resaltar el ícono de menú
-        setState(() {
-          _currentIndex = NavItem.MENU.index;
-          _isInContractManagement = true;
-        });
-        
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const ContractManagementPage(),
-            maintainState: true,
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ContractManagementPage(
+            onBack: () {
+              setState(() {
+                _currentIndex = NavItem.HOME.index;
+                _isInContractManagement = false;
+              });
+              Navigator.pop(context);
+            },
           ),
-        ).then((_) {
-          // Al regresar, restauramos el estado
-          if (mounted) {
-            setState(() {
-              _currentIndex = NavItem.HOME.index;
-              _isInContractManagement = false;
-            });
-          }
-        });
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${module.displayName} no implementado aún'),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-    });
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${module.displayName} no implementado aún'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override
@@ -105,10 +99,14 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
         return true;
       },
       child: Scaffold(
-        body: _screens[_currentIndex],
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _screens,
+        ),
         bottomNavigationBar: AppNavBar(
           currentIndex: _currentIndex,
           onTap: _onNavBarTap,
+          isInContractManagement: _isInContractManagement,
         ),
       ),
     );
