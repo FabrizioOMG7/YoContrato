@@ -1,9 +1,15 @@
+// lib/presentation/pages/main_navigation_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/modules/module_type.dart';
 import 'package:yo_contrato_app/domain/navigation/nav_item.dart';
 import 'package:yo_contrato_app/presentation/pages/dashboard_page.dart';
 import 'package:yo_contrato_app/presentation/pages/register_applicant_page.dart';
 import 'package:yo_contrato_app/presentation/pages/gestion_de_contratos/contract_management_page.dart';
+// Si agregas nuevos módulos, importa aquí sus páginas, por ejemplo:
+// import 'package:yo_contrato_app/presentation/pages/reclutamiento/reclutamiento_page.dart';
+// import 'package:yo_contrato_app/presentation/pages/ficha_medica/ficha_medica_page.dart';
+
 import 'package:yo_contrato_app/presentation/widgets/shared/app_navbar.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/modules_panel.dart';
 
@@ -15,27 +21,44 @@ class MainNavigationPage extends StatefulWidget {
 }
 
 class _MainNavigationPageState extends State<MainNavigationPage> {
+  // Índice de la pestaña normal seleccionada (HOME, SEARCH, etc.).
   int _currentIndex = NavItem.HOME.index;
-  int? _activeModuleScreenIndex;
 
-  /// Pantallas “normales” (índices 0 a 4)
+  // Si está en un módulo específico, almacena qué ModuleType está activo.
+  // Si es null → no estamos dentro de ningún módulo (mostramos IndexedStack).
+  ModuleType? _activeModule;
+
+  /// Listado de pantallas “normales” (índices 0 a 4). Corresponde a NavItem.values.
   final List<Widget> _screensNormal = [
-    Container(),                   // índice 0: MENU (abre panel)
-    Container(),                   // índice 1: SEARCH (placeholder)
-    const DashboardPage(),         // índice 2: HOME
-    const RegisterApplicantPage(), // índice 3: ADD_PERSON
-    Container(),                   // índice 4: SYNC (placeholder)
+    Container(),                   // 0: MENU (solo abre panel)
+    Container(),                   // 1: SEARCH placeholder
+    const DashboardPage(),         // 2: HOME
+    const RegisterApplicantPage(), // 3: ADD_PERSON
+    Container(),                   // 4: SYNC placeholder
   ];
 
-  /// Pantallas totales: normales + módulo en posición 5.
-  late final List<Widget> _screensTotal = [
-    ..._screensNormal,
-    ContractManagementPage(onBack: _exitContractManagement), // índice 5
-  ];
+  /// Mapeo de cada ModuleType a la pantalla correspondiente.
+  /// Agrega aquí cada módulo que desees escalar:
+  late final Map<ModuleType, Widget> _moduleScreens = {
+    ModuleType.GESTION_DE_CONTRATOS:
+        ContractManagementPage(onBack: _exitModule),
+    // Ejemplos de cómo quedaría si tuvieras más módulos:
+    // ModuleType.RECLUTAMIENTO: ReclutamientoPage(onBack: _exitModule),
+    // ModuleType.FICHA_MEDICA: FichaMedicaPage(onBack: _exitModule),
+    // ModuleType.BBS: BbsPage(onBack: _exitModule),
+    // ModuleType.FOTOGRAFIA: FotografiaPage(onBack: _exitModule),
+    // ModuleType.FIRMA_DE_DOCUMENTOS: FirmaDocumentosPage(onBack: _exitModule),
+    // ModuleType.VALIDACION_Y_FOTOCHECK: ValidacionFotocheckPage(onBack: _exitModule),
+    // ModuleType.DESISTIMIENTO: DesistimientoPage(onBack: _exitModule),
+    // ModuleType.GESTION_DE_POSTULACIONES: GestionDePostulacionesPage(onBack: _exitModule),
+    // ModuleType.RECLUTAMIENTO: ReclutamientoPage(onBack: _exitModule),
+    // etc.
+  };
 
+  /// Llamado al pulsar un ícono de BottomNavBar.
   void _onNavBarTap(int index) {
     // 1) Si NO hay módulo activo, comportamiento normal:
-    if (_activeModuleScreenIndex == null) {
+    if (_activeModule == null) {
       if (index == NavItem.MENU.index) {
         _showModulesPanel();
       } else {
@@ -52,14 +75,15 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
       return;
     }
 
-    //    - Si tocan CUALQUIER OTRO ícono (SEARCH=1, HOME=2, ADD_PERSON=3, SYNC=4),
-    //      SALIMOS del módulo y vamos a esa pestaña normal:
+    //    - Si tocan cualquier otro (SEARCH=1, HOME=2, ADD_PERSON=3, SYNC=4),
+    //      entonces SALIMOS del módulo y vamos a la pestaña normal correspondiente:
     setState(() {
-      _activeModuleScreenIndex = null;
+      _activeModule = null;
       _currentIndex = index;
     });
   }
 
+  /// Muestra el BottomSheet con la grilla de módulos.
   void _showModulesPanel() {
     showModalBottomSheet(
       context: context,
@@ -72,28 +96,32 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
     );
   }
 
+  /// Cuando el usuario elige un módulo en ModulesPanel:
   void _onModuleSelected(int moduleIndex) {
-    final module = ModuleType.values[moduleIndex];
+    final chosen = ModuleType.values[moduleIndex];
     Navigator.pop(context); // cerramos el panel
 
-    if (module == ModuleType.GESTION_DE_CONTRATOS) {
+    if (_moduleScreens.containsKey(chosen)) {
       setState(() {
-        _activeModuleScreenIndex = 5;       // índice en _screensTotal
-        _currentIndex = NavItem.MENU.index; // forzamos que marque “Menú”
+        _activeModule = chosen;
+        // Al entrar en un módulo, forzamos que el ícono de MENÚ quede marcado:
+        _currentIndex = NavItem.MENU.index;
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${module.displayName} no implementado aún'),
+          content: Text('${chosen.displayName} no implementado aún'),
           duration: const Duration(seconds: 2),
         ),
       );
     }
   }
 
-  void _exitContractManagement() {
+  /// Callback que pasamos a cada página de módulo. Cuando el módulo
+  /// llama onBack(), salimos al flujo normal y mostramos HOME.
+  void _exitModule() {
     setState(() {
-      _activeModuleScreenIndex = null;
+      _activeModule = null;
       _currentIndex = NavItem.HOME.index;
     });
   }
@@ -101,24 +129,28 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      // Interceptamos la flecha atrás del sistema:
       onWillPop: () async {
-        if (_activeModuleScreenIndex != null) {
-          _exitContractManagement();
+        if (_activeModule != null) {
+          // Si hay módulo activo, lo cerramos (no salimos de la app).
+          _exitModule();
           return false;
         }
-        return true;
+        return true; // Si no hay módulo, permitimos el pop normal.
       },
       child: Scaffold(
-        body: _activeModuleScreenIndex != null
-            ? _screensTotal[_activeModuleScreenIndex!]
+        // Si hay módulo activo, mostramos su página concreta; si no, el IndexedStack.
+        body: _activeModule != null
+            ? _moduleScreens[_activeModule]!
             : IndexedStack(
                 index: _currentIndex,
                 children: _screensNormal,
               ),
+
         bottomNavigationBar: AppNavBar(
           currentIndex: _currentIndex,
           onTap: _onNavBarTap,
-          isInContractManagement: _activeModuleScreenIndex != null,
+          isInModule: _activeModule != null,
         ),
       ),
     );

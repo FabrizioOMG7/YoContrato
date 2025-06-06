@@ -1,16 +1,18 @@
+// lib/presentation/widgets/shared/app_navbar.dart
+
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/navigation/nav_item.dart';
 
 class AppNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
-  final bool isInContractManagement;
+  final bool isInModule;
 
   const AppNavBar({
     Key? key,
     required this.currentIndex,
     required this.onTap,
-    this.isInContractManagement = false,
+    this.isInModule = false,
   }) : super(key: key);
 
   @override
@@ -29,17 +31,16 @@ class AppNavBar extends StatelessWidget {
         ],
       ),
       child: BottomNavigationBar(
-        // Mientras estemos en Contratos, forzamos que “Menú” (índice 0) aparezca seleccionado.
-        currentIndex: isInContractManagement 
+        // Si estamos en un módulo, forzamos que “Menú” (índice 0) aparezca seleccionado.
+        currentIndex: isInModule 
             ? NavItem.MENU.index 
             : currentIndex,
         onTap: (index) {
-          // Si estamos en Contratos y tocan “Menú”, lo ignoramos.
-          if (isInContractManagement && index == NavItem.MENU.index) {
+          // Si estamos en módulo y tocan “Menú”, lo ignoramos.
+          if (isInModule && index == NavItem.MENU.index) {
             return;
           }
-          // En cualquier otro caso (SEARCH, HOME, ADD_PERSON, SYNC),
-          // incluso estando en módulo, propagamos el tap a MainNavigationPage.
+          // En cualquier otro caso, dejamos que MainNavigationPage reciba el tap.
           onTap(index);
         },
         type: BottomNavigationBarType.shifting,
