@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 enum ModuleType {
   GESTION_DE_POSTULACIONES,
-  RECLUTAMIENTO,
   FICHA_MEDICA,
   BBS,
   FOTOGRAFIA,
@@ -17,8 +16,6 @@ extension ModuleTypeExtension on ModuleType {
     switch (this) {
       case ModuleType.GESTION_DE_POSTULACIONES:
         return 'Gestión de Postulaciones';
-      case ModuleType.RECLUTAMIENTO:
-        return 'Reclutamiento';
       case ModuleType.FICHA_MEDICA:
         return 'Ficha Médica';
       case ModuleType.BBS:
@@ -40,8 +37,6 @@ extension ModuleTypeExtension on ModuleType {
     switch (this) {
       case ModuleType.GESTION_DE_POSTULACIONES:
         return Icons.assignment_ind;
-      case ModuleType.RECLUTAMIENTO:
-        return Icons.people;
       case ModuleType.FICHA_MEDICA:
         return Icons.local_hospital;
       case ModuleType.BBS:

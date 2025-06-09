@@ -20,17 +20,17 @@ class ContractItem {
 }
 
 /// Cuerpo de la lista de contratos (sin Scaffold ni AppBar).
-/// Recibe la lista de contratos, la sede y un callback onTapBuscar.
+/// Recibe la lista de contratos, la sede y un callback onTapEditar.
 class ContractManagementContent extends StatelessWidget {
   final String sede;
   final List<ContractItem> contratos;
-  final void Function(ContractItem) onTapBuscar;
+  final void Function(ContractItem) onTapEditar;
 
   const ContractManagementContent({
     Key? key,
     required this.sede,
     required this.contratos,
-    required this.onTapBuscar,
+    required this.onTapEditar,
   }) : super(key: key);
 
   @override
@@ -64,7 +64,7 @@ class ContractManagementContent extends StatelessWidget {
                 final contrato = contratos[index];
                 return ContractCard(
                   contract: contrato,
-                  onTapBuscar: () => onTapBuscar(contrato),
+                  onTapEditar: () => onTapEditar(contrato),
                 );
               },
             ),
@@ -76,15 +76,15 @@ class ContractManagementContent extends StatelessWidget {
 }
 
 /// Tarjeta que muestra cada contrato y un botón para "Buscar Postulante".
-/// Al presionar el ícono de búsqueda, invoca onTapBuscar.
+/// Al presionar el ícono de lápiz, invoca onTapEditar.
 class ContractCard extends StatelessWidget {
   final ContractItem contract;
-  final VoidCallback onTapBuscar;
+  final VoidCallback onTapEditar;
 
   const ContractCard({
     Key? key,
     required this.contract,
-    required this.onTapBuscar,
+    required this.onTapEditar,
   }) : super(key: key);
 
   @override
@@ -172,7 +172,7 @@ class ContractCard extends StatelessWidget {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: onTapBuscar,
+                onTap: onTapEditar,
                 borderRadius: BorderRadius.circular(10),
                 child: const Icon(
                   Icons.edit,

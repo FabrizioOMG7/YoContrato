@@ -74,8 +74,8 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
         body: ContractManagementContent(
           sede: _sede,
           contratos: _contratos,
-          onTapBuscar: (contrato) {
-            // Aquí podrías implementar la navegación interna a “buscar postulante”:
+          onTapEditar: (contrato) {
+            // Aquí podrías implementar la navegación interna a “editar postulante”:
             // Por ahora, lo dejamos vacío o mostramos un SnackBar.
           },
         ),

@@ -42,7 +42,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   late final Map<ModuleType, Widget> _moduleScreens = {
     ModuleType.GESTION_DE_CONTRATOS:
         ContractManagementPage(onBack: _exitModule),
-    // Ejemplos de cómo quedaría si tuvieras más módulos:
+    // Ejemplos de cómo quedaría si tuviera más módulos:
     // ModuleType.RECLUTAMIENTO: ReclutamientoPage(onBack: _exitModule),
     // ModuleType.FICHA_MEDICA: FichaMedicaPage(onBack: _exitModule),
     // ModuleType.BBS: BbsPage(onBack: _exitModule),
