@@ -1,5 +1,3 @@
-// lib/presentation/widgets/shared/app_navbar.dart
-
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/navigation/nav_item.dart';
 
@@ -31,18 +29,9 @@ class AppNavBar extends StatelessWidget {
         ],
       ),
       child: BottomNavigationBar(
-        // Si estamos en un módulo, forzamos que “Menú” (índice 0) aparezca seleccionado.
-        currentIndex: isInModule 
-            ? NavItem.MENU.index 
-            : currentIndex,
-        onTap: (index) {
-          // Si estamos en módulo y tocan “Menú”, lo ignoramos.
-          if (isInModule && index == NavItem.MENU.index) {
-            return;
-          }
-          // En cualquier otro caso, dejamos que MainNavigationPage reciba el tap.
-          onTap(index);
-        },
+        currentIndex: isInModule ? NavItem.MENU.index : currentIndex,
+        // Simplificamos onTap para permitir siempre la navegación
+        onTap: onTap,
         type: BottomNavigationBarType.shifting,
         backgroundColor: Colors.white,
         selectedItemColor: primary,
