@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yo_contrato_app/presentation/widgets/shared/info_card.dart';
+import 'package:yo_contrato_app/presentation/widgets/shared/info_Card.dart';
 
 /// Modelo de datos para representar un contrato.
 class ContractItem {
@@ -10,7 +10,7 @@ class ContractItem {
   final String dni;
   final String evento;
   final String fechaHora;
-
+  
   const ContractItem({
     required this.nombre,
     required this.dni,
@@ -25,12 +25,14 @@ class ContractManagementContent extends StatelessWidget {
   final String sede;
   final List<ContractItem> contratos;
   final void Function(ContractItem) onTapEditar;
+  final VoidCallback onTapAgregar;
 
   const ContractManagementContent({
     Key? key,
     required this.sede,
     required this.contratos,
     required this.onTapEditar,
+    required this.onTapAgregar,
   }) : super(key: key);
 
   @override
@@ -52,6 +54,14 @@ class ContractManagementContent extends StatelessWidget {
             items: [
               InfoCardItem(label: 'Sede', value: sede),
             ],
+            trailing: IconButton(
+              icon: const Icon(
+                Icons.add_circle_rounded,
+                color: Color (0xFF667EEA),
+                size:24,
+              ),
+              onPressed: onTapAgregar,
+            )
           ),
           const SizedBox(height: 24),
 

@@ -78,6 +78,13 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
             // Aquí podrías implementar la navegación interna a “editar postulante”:
             // Por ahora, lo dejamos vacío o mostramos un SnackBar.
           },
+          onTapAgregar: (){
+                      ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Agregar Nuevo Contrato'),
+            )
+          );
+          }
         ),
       ),
     );
