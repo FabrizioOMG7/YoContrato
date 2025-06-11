@@ -1,6 +1,7 @@
 // lib/presentation/pages/gestion_de_contratos/contract_search_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:yo_contrato_app/domain/models/contract/contract_item.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import 'package:yo_contrato_app/presentation/widgets/applicant/applicant_search_widget.dart';
 import 'contract_management_content.dart'; // Para acceder a ContractItem

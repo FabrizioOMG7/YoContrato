@@ -1,12 +1,9 @@
-// lib/presentation/pages/gestion_de_contratos/contract_management_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_topbar.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/app_settings_button.dart';
+import '../../../domain/models/contract/contract_item.dart';
 import 'contract_management_content.dart';
 
-/// Página de “Gestión de Contratos” con su propio AppBar.
-/// Recibe un callback onBack para “volver” al MainNavigationPage.
 class ContractManagementPage extends StatefulWidget {
   final VoidCallback onBack;
 
@@ -21,25 +18,74 @@ class ContractManagementPage extends StatefulWidget {
 
 class _ContractManagementPageState extends State<ContractManagementPage> {
   String _sede = 'C5 NORTE';
+  bool _isLoading = false;
 
-  final List<ContractItem> _contratos = const [
+  // Lista de contratos de ejemplo
+  final List<ContractItem> _contratos = [
     ContractItem(
+      id: '1',
       nombre: 'RAMIREZ CARLOS MARTIN',
       dni: '46882447',
       evento: 'EVENTO PRUEBA FIN',
       fechaHora: '22/04/2025 - 00:12:13',
     ),
-    // Puedes agregar más ejemplos aquí...
+    ContractItem(
+      id: '2',
+      nombre: 'GARCIA ANA LUCIA',
+      dni: '45667890',
+      evento: 'EVENTO PRUEBA 2',
+      fechaHora: '23/04/2025 - 14:30:00',
+    ),
   ];
 
   void _onSedeChanged(String newSede) {
-    setState(() {
-      _sede = newSede;
-    });
+    if (mounted) {
+      setState(() {
+        _sede = newSede;
+      });
+    }
   }
 
   void _onLogout() {
-    Navigator.pushReplacementNamed(context, '/login');
+    Navigator.of(context).pushReplacementNamed('/login');
+  }
+
+  Future<void> _handleEditContract(ContractItem contrato) async {
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Editando contrato: ${contrato.nombre}'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      // TODO: Implementar lógica de edición
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error al editar: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _handleAddContract() async {
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Agregando nuevo contrato...'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      // TODO: Implementar lógica para agregar
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error al agregar: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -47,8 +93,6 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return WillPopScope(
-      // Interceptamos la flecha atrás del sistema: en lugar de hacer pop,
-      // invocamos el callback onBack para regresar a MainNavigationPage.
       onWillPop: () async {
         widget.onBack();
         return false;
@@ -69,23 +113,19 @@ class _ContractManagementPageState extends State<ContractManagementPage> {
             ),
           ],
         ),
-        backgroundColor:
-            isDarkMode ? const Color(0xFF030F0F) : const Color(0xFFF5F6FA),
-        body: ContractManagementContent(
-          sede: _sede,
-          contratos: _contratos,
-          onTapEditar: (contrato) {
-            // Aquí podrías implementar la navegación interna a “editar postulante”:
-            // Por ahora, lo dejamos vacío o mostramos un SnackBar.
-          },
-          onTapAgregar: (){
-                      ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Agregar Nuevo Contrato'),
-            )
-          );
-          }
-        ),
+        backgroundColor: isDarkMode 
+            ? const Color(0xFF030F0F) 
+            : const Color(0xFFF5F6FA),
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ContractManagementContent(
+                sede: _sede,
+                contratos: _contratos,
+                onTapEditar: _handleEditContract,
+                onTapAdd: _handleAddContract,
+              ),
       ),
     );
   }

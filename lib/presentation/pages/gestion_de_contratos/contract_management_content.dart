@@ -1,199 +1,198 @@
-// lib/presentation/pages/gestion_de_contratos/contract_management_content.dart
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yo_contrato_app/presentation/widgets/shared/info_Card.dart';
+import '../../../domain/models/contract/contract_item.dart';
+import '../../widgets/modules/contracts/contract_card.dart';
+import '../../widgets/shared/info_card.dart';
+import '../../widgets/shared/styles/card_styles.dart';
 
-/// Modelo de datos para representar un contrato.
-class ContractItem {
-  final String nombre;
-  final String dni;
-  final String evento;
-  final String fechaHora;
-  
-  const ContractItem({
-    required this.nombre,
-    required this.dni,
-    required this.evento,
-    required this.fechaHora,
-  });
-}
-
-/// Cuerpo de la lista de contratos (sin Scaffold ni AppBar).
-/// Recibe la lista de contratos, la sede y un callback onTapEditar.
-class ContractManagementContent extends StatelessWidget {
+class ContractManagementContent extends StatefulWidget {
   final String sede;
   final List<ContractItem> contratos;
   final void Function(ContractItem) onTapEditar;
-  final VoidCallback onTapAgregar;
+  final VoidCallback onTapAdd;
 
   const ContractManagementContent({
     Key? key,
     required this.sede,
     required this.contratos,
     required this.onTapEditar,
-    required this.onTapAgregar,
+    required this.onTapAdd,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // InfoCard para mostrar la sede
-          InfoCard(
-            icon: const Icon(
-              Icons.location_on_rounded,
-              color: Colors.white,
-              size: 28,
-            ),
-            items: [
-              InfoCardItem(label: 'Sede', value: sede),
-            ],
-            trailing: IconButton(
-              icon: const Icon(
-                Icons.add_circle_rounded,
-                color: Color (0xFF667EEA),
-                size:24,
-              ),
-              onPressed: onTapAgregar,
-            )
-          ),
-          const SizedBox(height: 24),
-
-          // Lista de contratos
-          Expanded(
-            child: ListView.separated(
-              itemCount: contratos.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final contrato = contratos[index];
-                return ContractCard(
-                  contract: contrato,
-                  onTapEditar: () => onTapEditar(contrato),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  State<ContractManagementContent> createState() => _ContractManagementContentState();
 }
 
-/// Tarjeta que muestra cada contrato y un botón para "Buscar Postulante".
-/// Al presionar el ícono de lápiz, invoca onTapEditar.
-class ContractCard extends StatelessWidget {
-  final ContractItem contract;
-  final VoidCallback onTapEditar;
+class _ContractManagementContentState extends State<ContractManagementContent> {
+  final Map<String, bool> _expansionStates = {};
+  bool _areAllExpanded = false;
 
-  const ContractCard({
-    Key? key,
-    required this.contract,
-    required this.onTapEditar,
-  }) : super(key: key);
+  void _toggleExpansion(String id) {
+    setState(() {
+      _expansionStates[id] = !(_expansionStates[id] ?? false);
+    });
+  }
+
+  void _toggleAllExpansion() {
+    setState(() {
+      _areAllExpanded = !_areAllExpanded;
+      for (var contrato in widget.contratos) {
+        _expansionStates[contrato.id] = _areAllExpanded;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isDarkMode ? const Color(0xFF1F2937) : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: isDarkMode
-                ? Colors.black.withOpacity(0.3)
-                : Colors.grey.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+    return Column(
+      children: [
+        // Info Card Section
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: InfoCard(
+            icon: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFF667EEA),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(
+                Icons.location_on_rounded,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+            items: [
+              InfoCardItem(
+                label: 'Sede principal',
+                value: widget.sede,
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Detalles del contrato
-          Expanded(
+        ),
+        // Content Section
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(10),
+                  blurRadius: 12,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  contract.nombre,
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color:
-                        isDarkMode ? Colors.white : const Color(0xFF111827),
-                    letterSpacing: -0.2,
+                // Header
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                          ),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Postulantes registrados',
+                        style: CardStyles.titleStyle(context, MediaQuery.of(context).size.width),
+                      ),
+                      const SizedBox(width: 12),
+                      InkWell(
+                        onTap: _toggleAllExpansion,
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF667EEA).withAlpha(20),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: const Color(0xFF667EEA).withAlpha(51),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              AnimatedRotation(
+                                turns: _areAllExpanded ? 0.5 : 0,
+                                duration: const Duration(milliseconds: 200),
+                                child: const Icon(
+                                  Icons.expand_more,
+                                  size: 16,
+                                  color: Color(0xFF667EEA),
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                _areAllExpanded ? 'Comprimir' : 'Expandir',
+                                style: CardStyles.actionStyle(context, MediaQuery.of(context).size.width),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF667EEA).withAlpha(25),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '${widget.contratos.length}',
+                          style: CardStyles.counterStyle(context, MediaQuery.of(context).size.width),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'DNI: ${contract.dni}',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color:
-                        isDarkMode ? Colors.grey[400] : const Color(0xFF6B7280),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'EVENTO: ${contract.evento}',
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color:
-                        isDarkMode ? Colors.grey[300] : const Color(0xFF374151),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'FECHA Y HORA: ${contract.fechaHora}',
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                    color:
-                        isDarkMode ? Colors.grey[400] : const Color(0xFF6B7280),
-                  ),
+                // List Section
+                Expanded(
+                  child: widget.contratos.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No hay postulantes registrados',
+                            style: CardStyles.emptyStyle(context, MediaQuery.of(context).size.width),
+                          ),
+                        )
+                      : ListView.separated(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: widget.contratos.length,
+                          separatorBuilder: (_, __) => const SizedBox(height: 12),
+                          itemBuilder: (context, index) {
+                            final contrato = widget.contratos[index];
+                            return ContractCard(
+                              contract: contrato,
+                              isExpanded: _expansionStates[contrato.id] ?? false,
+                              onToggleExpansion: () => _toggleExpansion(contrato.id),
+                              onTapEditar: () => widget.onTapEditar(contrato),
+                            );
+                          },
+                        ),
                 ),
               ],
             ),
           ),
-
-          // Botón "editar Postulante" con ícono de lupa
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: const Color(0xFF667EEA).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color(0xFF667EEA).withOpacity(0.2),
-                width: 1,
-              ),
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: onTapEditar,
-                borderRadius: BorderRadius.circular(10),
-                child: const Icon(
-                  Icons.edit,
-                  color: Color(0xFF667EEA),
-                  size: 20,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
