@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Constantes del InfoCard
 class InfoCardStyle {
   static const LinearGradient iconGradient = LinearGradient(
     begin: Alignment.topLeft,
@@ -29,7 +28,7 @@ class InfoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withAlpha(10),
             blurRadius: 12,
             offset: const Offset(0, 2),
           ),
@@ -39,7 +38,6 @@ class InfoCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Ícono principal
           Container(
             height: 48,
             width: 48,
@@ -50,7 +48,6 @@ class InfoCard extends StatelessWidget {
             child: Center(child: icon),
           ),
           const SizedBox(width: 18),
-          // Lista de label-valor
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
