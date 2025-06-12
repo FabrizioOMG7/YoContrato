@@ -31,7 +31,7 @@ class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
         // Content List Section
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 8), // Reducido de 16 a 8
             child: ContentListWidget<T>(
               title: contentListConfig.title,
               items: contentListConfig.items,
@@ -61,7 +61,7 @@ class ContentListConfig<T extends BaseItem> {
     this.onAdd,
   });
 
-  // Factories para diferentes tipos de listas
+  // Factory para configuración de contratos
   factory ContentListConfig.contracts({
     required List<T> contratos,
     required Widget Function(T, bool, VoidCallback) cardBuilder,

@@ -11,12 +11,12 @@ class ContractManagementContent extends StatelessWidget {
   final VoidCallback onTapAdd;
 
   const ContractManagementContent({
-    Key? key,
+    super.key,
     required this.sede,
     required this.contratos,
     required this.onTapEditar,
     required this.onTapAdd,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ContractManagementContent extends StatelessWidget {
       icon: const Icon(
         Icons.location_on_rounded,
         color: Colors.white,
-        size:28
+        size: 28
       ),
       
       // Items para el InfoCard
