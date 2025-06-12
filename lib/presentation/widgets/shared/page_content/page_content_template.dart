@@ -1,18 +1,18 @@
-// lib/presentation/widgets/shared/page_content/page_content_template.dart
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/models/base/base_item.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/content_list/content_list_widget.dart'; 
 import '../info_card.dart';
 
 /// Template reutilizable para páginas de gestión
-/// CORREGIDO: Layout completamente funcional
 class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
-  final InfoCardConfig infoCardConfig;
+  final Widget icon;
+  final List<InfoCardItem> infoCardItems;
   final ContentListConfig<T> contentListConfig;
 
   const PageContentTemplate({
     Key? key,
-    required this.infoCardConfig,
+    required this.icon,
+    required this.infoCardItems,
     required this.contentListConfig,
   }) : super(key: key);
 
@@ -24,23 +24,12 @@ class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16),
           child: InfoCard(
-            icon: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: infoCardConfig.iconBackgroundColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                infoCardConfig.icon,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-            items: infoCardConfig.items,
+            icon: icon,
+            items: infoCardItems,
           ),
         ),
         
-        // Content List Section - CORREGIDO: Ocupa el resto del espacio
+        // Content List Section
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -53,68 +42,6 @@ class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
               cardBuilder: contentListConfig.cardBuilder,
             ),
           ),
-        ),
-        
-        const SizedBox(height: 16), // Bottom spacing
-      ],
-    );
-  }
-}
-
-/// Configuración para InfoCard
-class InfoCardConfig {
-  final IconData icon;
-  final Color iconBackgroundColor;
-  final List<InfoCardItem> items;
-
-  const InfoCardConfig({
-    required this.icon,
-    required this.iconBackgroundColor,
-    required this.items,
-  });
-
-  factory InfoCardConfig.contracts(String sede) {
-    return InfoCardConfig(
-      icon: Icons.location_on_rounded,
-      iconBackgroundColor: const Color(0xFF667EEA),
-      items: [
-        InfoCardItem(
-          label: 'Sede principal',
-          value: sede,
-        ),
-      ],
-    );
-  }
-
-  factory InfoCardConfig.bbss(String sede, int totalPersonal) {
-    return InfoCardConfig(
-      icon: Icons.people_outline,
-      iconBackgroundColor: const Color(0xFF10B981),
-      items: [
-        InfoCardItem(
-          label: 'Sede principal',
-          value: sede,
-        ),
-        InfoCardItem(
-          label: 'Personal disponible',
-          value: totalPersonal.toString(),
-        ),
-      ],
-    );
-  }
-
-  factory InfoCardConfig.events(String sede, int eventosActivos) {
-    return InfoCardConfig(
-      icon: Icons.event_outlined,
-      iconBackgroundColor: const Color(0xFFF59E0B),
-      items: [
-        InfoCardItem(
-          label: 'Sede principal',
-          value: sede,
-        ),
-        InfoCardItem(
-          label: 'Eventos activos',
-          value: eventosActivos.toString(),
         ),
       ],
     );

@@ -1,12 +1,9 @@
-// lib/presentation/pages/gestion_de_contratos/contract_management_content.dart
 import 'package:flutter/material.dart';
 import '../../../domain/models/contract/contract_item.dart';
 import '../../widgets/modules/contracts/contract_card.dart';
 import '../../widgets/shared/page_content/page_content_template.dart';
+import '../../widgets/shared/info_card.dart';
 
-/// Content para gestión de contratos
-/// SOLO contiene lógica de datos y callbacks
-/// TODO el diseño está encapsulado en PageContentTemplate
 class ContractManagementContent extends StatelessWidget {
   final String sede;
   final List<ContractItem> contratos;
@@ -21,13 +18,25 @@ class ContractManagementContent extends StatelessWidget {
     required this.onTapAdd,
   }) : super(key: key);
 
-  @override  
+  @override
   Widget build(BuildContext context) {
     return PageContentTemplate<ContractItem>(
-      // Configuración del InfoCard - Sin código de diseño
-      infoCardConfig: InfoCardConfig.contracts(sede),
+      // Icon para el InfoCard
+      icon: const Icon(
+        Icons.location_on_rounded,
+        color: Colors.white,
+        size:28
+      ),
       
-      // Configuración de la lista - Sin código de diseño
+      // Items para el InfoCard
+      infoCardItems: [
+        InfoCardItem(
+          label: 'Sede principal',
+          value: sede.toUpperCase(),
+        ),
+      ],
+      
+      // Configuración de la lista
       contentListConfig: ContentListConfig.contracts(
         contratos: contratos,
         onAdd: onTapAdd,
@@ -43,7 +52,3 @@ class ContractManagementContent extends StatelessWidget {
     );
   }
 }
-
-// COMPARACIÓN:
-// ANTES: ~100 líneas con mucho código de diseño mezclado
-// AHORA: ~20 líneas, solo lógica de negocio y datos

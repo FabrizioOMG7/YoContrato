@@ -29,9 +29,10 @@ void main() {
       providers: [
         BlocProvider(create: (context) => statCubit),
         BlocProvider(
-          create: (context) => AuthBloc(
-            LoginUser(AuthRepositoryImpl()), // Inicialización correcta
-          ),
+          create:
+              (context) => AuthBloc(
+                LoginUser(AuthRepositoryImpl()), // Inicialización correcta
+              ),
         ),
       ],
       child: const MyApp(),
