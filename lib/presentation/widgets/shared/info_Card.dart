@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+// Constantes del InfoCard
+class InfoCardStyle {
+  static const LinearGradient iconGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+  );
+}
+
 class InfoCard extends StatelessWidget {
   final Widget icon;
   final List<InfoCardItem> items;
@@ -35,11 +44,7 @@ class InfoCard extends StatelessWidget {
             height: 48,
             width: 48,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
-              ),
+              gradient: InfoCardStyle.iconGradient,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Center(child: icon),
@@ -49,37 +54,34 @@ class InfoCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: items
-                  .map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.label,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: Color(0xFF6B7280),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            item.value,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF111827),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+              children: items.map(
+                (item) => Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.label,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF6B7280),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                      Text(
+                        item.value,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF111827),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ).toList(),
             ),
           ),
-          // Corregido el spread operator aquí
           if (trailing != null) const SizedBox(width: 12),
           if (trailing != null) trailing!,
         ],

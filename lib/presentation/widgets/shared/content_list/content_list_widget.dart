@@ -8,17 +8,15 @@ class ContentListWidget<T extends BaseItem> extends StatefulWidget {
   final Widget Function(T item, bool isExpanded, VoidCallback onToggle) cardBuilder;
   final VoidCallback? onAdd;
   final String emptyText;
-  final IconData? headerIcon;
 
   const ContentListWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.items,
     required this.cardBuilder,
     required this.emptyText,
     this.onAdd,
-    this.headerIcon,
-  }) : super(key: key);
+  });
 
   @override
   State<ContentListWidget<T>> createState() => _ContentListWidgetState<T>();
@@ -61,9 +59,6 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildHeader(context),
-          // Botón Agregar reubicado después del header
-          if (widget.onAdd != null)
-            _buildAddButton(context),
           Flexible(
             fit: FlexFit.loose,
             child: _buildContent(context),
@@ -98,22 +93,6 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
             ),
           ),
           const SizedBox(width: 12),
-          
-          if (widget.headerIcon != null) ...[
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF667EEA).withAlpha(20),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                widget.headerIcon,
-                size: 16,
-                color: const Color(0xFF667EEA),
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
           
           Expanded(
             child: Text(
@@ -160,7 +139,8 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
             ),
             const SizedBox(width: 8),
           ],
-          
+
+          // Contador y botón de agregar juntos
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
@@ -178,51 +158,31 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
 
-  // Nuevo widget para el botón Agregar
-  Widget _buildAddButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: InkWell(
-        onTap: widget.onAdd,
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(
-            vertical: 12,
-            horizontal: 16,
-          ),
-          decoration: BoxDecoration(
-            color: const Color(0xFF667EEA).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: const Color(0xFF667EEA).withOpacity(0.2),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.add_circle_outline,
-                size: 20,
-                color: Color(0xFF667EEA),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Agregar nuevo postulante',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF667EEA),
+          // Botón de agregar (solo icono)
+          if (widget.onAdd != null) ...[
+            const SizedBox(width: 8),
+            InkWell(
+              onTap: widget.onAdd,
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF667EEA).withAlpha(20),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: const Color(0xFF667EEA).withAlpha(51),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.add_circle_outline,
+                  size: 16,
+                  color: Color(0xFF667EEA),
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          ],
+        ],
       ),
     );
   }
