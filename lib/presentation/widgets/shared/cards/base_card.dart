@@ -1,19 +1,22 @@
+// lib/presentation/widgets/shared/cards/base_card.dart
 import 'package:flutter/material.dart';
 
 abstract class BaseCard extends StatelessWidget {
-  final List<Widget> actions;
   final bool isExpanded;
   final VoidCallback onToggleExpansion;
+  final VoidCallback? onEdit; // CORREGIDO: Agregado callback para editar
   
   const BaseCard({
     super.key,
-    this.actions = const [],
     required this.isExpanded,
     required this.onToggleExpansion,
+    this.onEdit, // CORREGIDO: Opcional para cards que no necesiten editar
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -22,11 +25,13 @@ abstract class BaseCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: isDarkMode ? const Color(0xFF1F2937) : Colors.white,
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.08),
+                color: isDarkMode 
+                    ? Colors.black.withOpacity(0.3)
+                    : Colors.grey.withOpacity(0.08),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -46,9 +51,28 @@ abstract class BaseCard extends StatelessWidget {
                   ],
                 ),
               ),
-              if (actions.isNotEmpty) ...[
+              // CORREGIDO: Agregado botón de editar condicional
+              if (onEdit != null) ...[
                 const SizedBox(width: 12),
-                ...actions,
+                InkWell(
+                  onTap: onEdit,
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF667EEA).withAlpha(20),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color(0xFF667EEA).withAlpha(51),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.edit_outlined,
+                      size: 16,
+                      color: Color(0xFF667EEA),
+                    ),
+                  ),
+                ),
               ],
             ],
           ),

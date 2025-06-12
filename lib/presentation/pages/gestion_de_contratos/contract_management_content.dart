@@ -21,7 +21,7 @@ class ContractManagementContent extends StatelessWidget {
     required this.onTapAdd,
   }) : super(key: key);
 
-  @override 
+  @override  
   Widget build(BuildContext context) {
     return PageContentTemplate<ContractItem>(
       // Configuración del InfoCard - Sin código de diseño

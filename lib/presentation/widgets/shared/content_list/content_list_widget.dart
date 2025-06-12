@@ -1,27 +1,13 @@
-// lib/presentation/widgets/shared/content_list/content_list_widget.dart
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/models/base/base_item.dart';
 import '../styles/card_styles.dart';
 
-/// Widget genérico reutilizable para listas de contenido
-/// Implementa el patrón Template Method para máxima reutilización
 class ContentListWidget<T extends BaseItem> extends StatefulWidget {
-  /// Título de la sección (ej: "Postulantes registrados", "Base de datos", etc.)
   final String title;
-  
-  /// Lista de items a mostrar
   final List<T> items;
-  
-  /// Builder para crear cada card específica
   final Widget Function(T item, bool isExpanded, VoidCallback onToggle) cardBuilder;
-  
-  /// Callback para agregar nuevo item
   final VoidCallback? onAdd;
-  
-  /// Texto a mostrar cuando la lista está vacía
   final String emptyText;
-  
-  /// Icono para la cabecera (opcional)
   final IconData? headerIcon;
 
   const ContentListWidget({
@@ -72,20 +58,33 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           _buildHeader(context),
-          _buildContent(context),
+          // Botón Agregar reubicado después del header
+          if (widget.onAdd != null)
+            _buildAddButton(context),
+          Flexible(
+            fit: FlexFit.loose,
+            child: _buildContent(context),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
+        ),
+      ),
       child: Row(
         children: [
-          // Decorative line
           Container(
             width: 4,
             height: 20,
@@ -100,7 +99,6 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
           ),
           const SizedBox(width: 12),
           
-          // Optional header icon
           if (widget.headerIcon != null) ...[
             Container(
               padding: const EdgeInsets.all(8),
@@ -117,14 +115,13 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
             const SizedBox(width: 8),
           ],
           
-          // Title
-          Text(
-            widget.title,
-            style: CardStyles.titleStyle(context, MediaQuery.of(context).size.width),
+          Expanded(
+            child: Text(
+              widget.title,
+              style: CardStyles.titleStyle(context, MediaQuery.of(context).size.width),
+            ),
           ),
-          const SizedBox(width: 12),
           
-          // Expand/Collapse button
           if (widget.items.isNotEmpty) ...[
             InkWell(
               onTap: _toggleAllExpansion,
@@ -161,47 +158,9 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
                 ),
               ),
             ),
-          ],
-          
-          const Spacer(),
-          
-          // Add button (if provided)
-          if (widget.onAdd != null) ...[
-            InkWell(
-              onTap: widget.onAdd,
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 6,
-                ),
-                decoration: CardStyles.actionButtonDecoration(
-                  MediaQuery.of(context).size.width,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.add,
-                      size: 16,
-                      color: Color(0xFF667EEA),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Agregar',
-                      style: CardStyles.actionStyle(
-                        context,
-                        MediaQuery.of(context).size.width,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             const SizedBox(width: 8),
           ],
           
-          // Counter
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
@@ -224,48 +183,98 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
     );
   }
 
-  Widget _buildContent(BuildContext context) {
-    return Expanded(
-      child: widget.items.isEmpty
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.inbox_outlined,
-                      size: 48,
-                      color: Colors.grey[400],
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      widget.emptyText,
-                      style: CardStyles.emptyStyle(
-                        context,
-                        MediaQuery.of(context).size.width,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+  // Nuevo widget para el botón Agregar
+  Widget _buildAddButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: InkWell(
+        onTap: widget.onAdd,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            vertical: 12,
+            horizontal: 16,
+          ),
+          decoration: BoxDecoration(
+            color: const Color(0xFF667EEA).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: const Color(0xFF667EEA).withOpacity(0.2),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.add_circle_outline,
+                size: 20,
+                color: Color(0xFF667EEA),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Agregar nuevo postulante',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF667EEA),
                 ),
               ),
-            )
-          : ListView.separated(
-              padding: const EdgeInsets.all(16),
-              itemCount: widget.items.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final item = widget.items[index];
-                final isExpanded = _expansionStates[item.id] ?? false;
-                
-                return widget.cardBuilder(
-                  item,
-                  isExpanded,
-                  () => _toggleExpansion(item.id),
-                );
-              },
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    if (widget.items.isEmpty) {
+      return Container(
+        constraints: const BoxConstraints(minHeight: 200),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.inbox_outlined,
+                  size: 48,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  widget.emptyText,
+                  style: CardStyles.emptyStyle(
+                    context,
+                    MediaQuery.of(context).size.width,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
+          ),
+        ),
+      );
+    }
+
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(16),
+      itemCount: widget.items.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final item = widget.items[index];
+        final isExpanded = _expansionStates[item.id] ?? false;
+        
+        return widget.cardBuilder(
+          item,
+          isExpanded,
+          () => _toggleExpansion(item.id),
+        );
+      },
     );
   }
 }

@@ -2,18 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/models/base/base_item.dart';
 import 'package:yo_contrato_app/presentation/widgets/shared/content_list/content_list_widget.dart'; 
-
 import '../info_card.dart';
 
-
 /// Template reutilizable para páginas de gestión
-/// Encapsula TODA la lógica de diseño y layout
-/// Las páginas solo pasan datos y callbacks
+/// CORREGIDO: Layout completamente funcional
 class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
-  /// Configuración del InfoCard superior
   final InfoCardConfig infoCardConfig;
-  
-  /// Configuración de la lista de contenido
   final ContentListConfig<T> contentListConfig;
 
   const PageContentTemplate({
@@ -26,7 +20,7 @@ class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Info Card Section - Completamente encapsulado
+        // Info Card Section - Fija en la parte superior
         Padding(
           padding: const EdgeInsets.all(16),
           child: InfoCard(
@@ -46,7 +40,7 @@ class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
           ),
         ),
         
-        // Content List Section - Completamente encapsulado
+        // Content List Section - CORREGIDO: Ocupa el resto del espacio
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -68,7 +62,6 @@ class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
 }
 
 /// Configuración para InfoCard
-/// Centraliza todos los parámetros de configuración
 class InfoCardConfig {
   final IconData icon;
   final Color iconBackgroundColor;
@@ -80,7 +73,6 @@ class InfoCardConfig {
     required this.items,
   });
 
-  /// Factory para módulo de contratos
   factory InfoCardConfig.contracts(String sede) {
     return InfoCardConfig(
       icon: Icons.location_on_rounded,
@@ -94,7 +86,6 @@ class InfoCardConfig {
     );
   }
 
-  /// Factory para módulo de BBSS
   factory InfoCardConfig.bbss(String sede, int totalPersonal) {
     return InfoCardConfig(
       icon: Icons.people_outline,
@@ -112,7 +103,6 @@ class InfoCardConfig {
     );
   }
 
-  /// Factory para módulo de eventos
   factory InfoCardConfig.events(String sede, int eventosActivos) {
     return InfoCardConfig(
       icon: Icons.event_outlined,
@@ -132,7 +122,6 @@ class InfoCardConfig {
 }
 
 /// Configuración para la lista de contenido
-/// Centraliza todos los parámetros de la lista
 class ContentListConfig<T extends BaseItem> {
   final String title;
   final List<T> items;
@@ -150,7 +139,6 @@ class ContentListConfig<T extends BaseItem> {
     this.onAdd,
   });
 
-  /// Factory para módulo de contratos
   factory ContentListConfig.contracts({
     required List<T> contratos,
     required Widget Function(T, bool, VoidCallback) cardBuilder,
@@ -166,7 +154,6 @@ class ContentListConfig<T extends BaseItem> {
     );
   }
 
-  /// Factory para módulo de BBSS
   factory ContentListConfig.bbss({
     required List<T> bbssItems,
     required Widget Function(T, bool, VoidCallback) cardBuilder,
@@ -182,7 +169,6 @@ class ContentListConfig<T extends BaseItem> {
     );
   }
 
-  /// Factory para módulo de eventos
   factory ContentListConfig.events({
     required List<T> eventos,
     required Widget Function(T, bool, VoidCallback) cardBuilder,

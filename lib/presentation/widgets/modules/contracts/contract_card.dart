@@ -1,5 +1,5 @@
+// lib/presentation/widgets/modules/contracts/contract_card.dart
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../domain/models/contract/contract_item.dart';
 import '../../shared/cards/base_card.dart';
 import '../../shared/styles/card_styles.dart';
@@ -14,7 +14,7 @@ class ContractCard extends BaseCard {
     required this.onTapEditar,
     required super.isExpanded,
     required super.onToggleExpansion,
-  });
+  }) : super(onEdit: onTapEditar); // CORREGIDO: Pasamos el callback al BaseCard
 
   @override
   Widget buildHeader(BuildContext context) {
@@ -44,19 +44,54 @@ class ContractCard extends BaseCard {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'DNI: ${contract.dni}',
-          style: CardStyles.subtitleStyle(context, MediaQuery.of(context).size.width),
+        _buildInfoRow(
+          context,
+          label: 'DNI',
+          value: contract.dni,
+          icon: Icons.badge_outlined,
         ),
         const SizedBox(height: 8),
-        Text(
-          'EVENTO: ${contract.evento}',
-          style: CardStyles.subtitleStyle(context, MediaQuery.of(context).size.width),
+        _buildInfoRow(
+          context,
+          label: 'EVENTO',
+          value: contract.evento,
+          icon: Icons.event_outlined,
         ),
         const SizedBox(height: 8),
+        _buildInfoRow(
+          context,
+          label: 'FECHA Y HORA',
+          value: contract.fechaHora,
+          icon: Icons.schedule_outlined,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoRow(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required IconData icon,
+  }) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 14,
+          color: const Color(0xFF667EEA),
+        ),
+        const SizedBox(width: 8),
         Text(
-          'FECHA Y HORA: ${contract.fechaHora}',
-          style: CardStyles.subtitleStyle(context, MediaQuery.of(context).size.width),
+          '$label: ',
+          style: CardStyles.subtitleStyle(context, MediaQuery.of(context).size.width)
+              .copyWith(fontWeight: FontWeight.w600),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: CardStyles.subtitleStyle(context, MediaQuery.of(context).size.width),
+          ),
         ),
       ],
     );
