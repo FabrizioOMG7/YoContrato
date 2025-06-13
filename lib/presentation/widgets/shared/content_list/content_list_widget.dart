@@ -142,25 +142,15 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
           // Botón de agregar (solo icono)
           if (widget.onAdd != null) ...[
             const SizedBox(width: 8),
-            InkWell(
-              onTap: widget.onAdd,
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF667EEA).withAlpha(20),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: const Color(0xFF667EEA).withAlpha(51),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.add_circle_outline,
-                  size: 16,
-                  color: Color(0xFF667EEA),
-                ),
-              ),
+          IconButton(
+            onPressed: widget.onAdd,
+            icon: const Icon(
+              Icons.person_add_alt_1,
+              size:30,
+              color: Color(0xFF667EEA),
             ),
+            tooltip: 'Agregar nuevo postulante',
+          )
           ],
         ],
       ),
