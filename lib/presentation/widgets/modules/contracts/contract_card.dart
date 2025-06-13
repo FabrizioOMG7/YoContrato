@@ -1,39 +1,80 @@
-// lib/presentation/widgets/modules/contracts/contract_card.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../domain/models/contract/contract_item.dart';
 import '../../shared/cards/base_card.dart';
-import '../../shared/styles/card_styles.dart';
 
 class ContractCard extends BaseCard {
   final ContractItem contract;
-  final VoidCallback onTapEditar;
 
   const ContractCard({
-    super.key,
+    Key? key,
     required this.contract,
-    required this.onTapEditar,
-    required super.isExpanded,
-    required super.onToggleExpansion,
-  }) : super(onEdit: onTapEditar); // CORREGIDO: Pasamos el callback al BaseCard
+    required bool isExpanded,
+    required VoidCallback onToggleExpansion,
+    required VoidCallback onTapEditar,
+  }) : super(
+      key: key,
+      isExpanded: isExpanded,
+      onToggleExpansion: onToggleExpansion,
+      onEdit: onTapEditar,
+      );
 
   @override
   Widget buildHeader(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       children: [
         Expanded(
-          child: Text(
-            contract.nombre,
-            style: CardStyles.titleStyle(context, MediaQuery.of(context).size.width),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                contract.nombre,
+                style: GoogleFonts.inter(
+                  fontSize: 14, // Reducido de 16
+                  fontWeight: FontWeight.w600,
+                  color: isDarkMode ? Colors.white : const Color(0xFF111827),
+                  letterSpacing: -0.2,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'DNI: ${contract.dni}',
+                style: GoogleFonts.inter(
+                  fontSize: 12, // Reducido de 13
+                  color:
+                      isDarkMode ? Colors.grey[400] : const Color(0xFF6B7280),
+                ),
+              ),
+            ],
           ),
         ),
-        AnimatedRotation(
-          turns: isExpanded ? 0.5 : 0,
-          duration: const Duration(milliseconds: 200),
-          child: const Icon(
-            Icons.expand_more,
-            color: Color(0xFF667EEA),
-            size: 24,
+        IconButton(
+          icon: AnimatedRotation(
+            turns: isExpanded ? 0.5 : 0,
+            duration: const Duration(milliseconds: 200),
+            child: Icon(
+              Icons.expand_more,
+              color: Theme.of(context).primaryColor,
+              size: 20,
+            ),
           ),
+          onPressed: onToggleExpansion,
+          tooltip: isExpanded ? 'Ocultar detalles' : 'Ver detalles',
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.edit_outlined,
+            color: Theme.of(context).primaryColor,
+            size: 20,
+          ),
+          onPressed: onEdit,
+          tooltip: 'Editar contrato',
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
         ),
       ],
     );
@@ -41,28 +82,26 @@ class ContractCard extends BaseCard {
 
   @override
   Widget buildExpandedContent(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? Colors.white70 : const Color(0xFF4B5563);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildInfoRow(
           context,
-          label: 'DNI',
-          value: contract.dni,
-          icon: Icons.badge_outlined,
-        ),
-        const SizedBox(height: 8),
-        _buildInfoRow(
-          context,
+          icon: Icons.event_outlined,
           label: 'EVENTO',
           value: contract.evento,
-          icon: Icons.event_outlined,
+          textColor: textColor,
         ),
         const SizedBox(height: 8),
         _buildInfoRow(
           context,
+          icon: Icons.schedule_outlined,
           label: 'FECHA Y HORA',
           value: contract.fechaHora,
-          icon: Icons.schedule_outlined,
+          textColor: textColor,
         ),
       ],
     );
@@ -70,27 +109,36 @@ class ContractCard extends BaseCard {
 
   Widget _buildInfoRow(
     BuildContext context, {
+    required IconData icon,
     required String label,
     required String value,
-    required IconData icon,
+    required Color textColor,
   }) {
     return Row(
       children: [
-        Icon(
-          icon,
-          size: 14,
-          color: const Color(0xFF667EEA),
-        ),
+        Icon(icon, size: 16, color: Theme.of(context).primaryColor),
         const SizedBox(width: 8),
-        Text(
-          '$label: ',
-          style: CardStyles.subtitleStyle(context, MediaQuery.of(context).size.width)
-              .copyWith(fontWeight: FontWeight.w600),
-        ),
         Expanded(
-          child: Text(
-            value,
-            style: CardStyles.subtitleStyle(context, MediaQuery.of(context).size.width),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: '$label: ',
+                  style: GoogleFonts.inter(
+                    fontSize: 12, // Reducido de 13
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
+                ),
+                TextSpan(
+                  text: value,
+                  style: GoogleFonts.inter(
+                    fontSize: 12, // Reducido de 13
+                    color: textColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
