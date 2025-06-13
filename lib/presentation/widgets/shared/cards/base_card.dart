@@ -1,6 +1,5 @@
 // lib/presentation/widgets/shared/cards/base_card.dart
 import 'package:flutter/material.dart';
-import '../../../../core/design_system/app_spacing.dart';
 
 abstract class BaseCard extends StatelessWidget {
   final bool isExpanded;
@@ -26,7 +25,7 @@ abstract class BaseCard extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       child: Card(
-        margin: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+        margin: const EdgeInsets.symmetric(vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -36,7 +35,7 @@ abstract class BaseCard extends StatelessWidget {
           onTap: onToggleExpansion,
           borderRadius: BorderRadius.circular(12),
           child: Padding(
-            padding: AppSpacing.getResponsiveCardPadding(context),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -44,7 +43,7 @@ abstract class BaseCard extends StatelessWidget {
                 buildHeader(context),
                 if (isExpanded) ...[
                   const Divider(
-                    height: AppSpacing.cardDividerVertical,
+                    height: 16,
                     thickness: 1,
                   ),
                   buildExpandedContent(context),

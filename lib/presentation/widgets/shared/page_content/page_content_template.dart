@@ -2,21 +2,28 @@
 import 'package:flutter/material.dart';
 import '../../../../core/design_system/app_spacing.dart';
 import '../info_card.dart';
+import '../content_list/content_list_widget.dart';
+import '../../../../domain/models/base/base_item.dart';
 
-class ContentListConfig<T> {
+/// Configuración para la lista de contenido que define cómo se comporta la lista
+/// Aplica el principio de Responsabilidad Única (SRP) al encapsular toda la configuración de la lista
+class ContentListConfig<T extends BaseItem> {
   final List<T> items;
   final VoidCallback? onAdd;
   final Widget Function(T item, bool isExpanded, VoidCallback onToggle) cardBuilder;
   final String? emptyMessage;
+  final String listTitle; // Nuevo campo para el título de la lista
 
   const ContentListConfig({
     required this.items,
     required this.cardBuilder,
+    required this.listTitle, // Título obligatorio
     this.onAdd,
     this.emptyMessage,
   });
 
-  // Factory constructor para contratos
+  /// Factory constructor para contratos
+  /// Aplica el patrón Factory para crear configuraciones específicas
   factory ContentListConfig.contracts({
     required List<T> contratos,
     required VoidCallback onAdd,
@@ -26,12 +33,15 @@ class ContentListConfig<T> {
       items: contratos,
       onAdd: onAdd,
       cardBuilder: cardBuilder,
+      listTitle: 'CONTRATOS REGISTRADOS', // Título específico para contratos
       emptyMessage: 'No hay contratos disponibles',
     );
   }
 }
 
-class PageContentTemplate<T> extends StatefulWidget {
+/// Template de página que combina InfoCard con ContentListWidget
+/// Aplica el principio de Composición sobre Herencia al usar ContentListWidget en lugar de reimplementar la funcionalidad
+class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
   final Widget icon;
   final List<InfoCardItem> infoCardItems;
   final ContentListConfig<T> contentListConfig;
@@ -44,102 +54,35 @@ class PageContentTemplate<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<PageContentTemplate<T>> createState() => _PageContentTemplateState<T>();
-}
-
-class _PageContentTemplateState<T> extends State<PageContentTemplate<T>> {
-  final Map<int, bool> _expansionStates = {};
-
-  @override
-  void initState() {
-    super.initState();
-    // Inicializar todos los elementos como comprimidos
-    for (int i = 0; i < widget.contentListConfig.items.length; i++) {
-      _expansionStates[i] = false;
-    }
-  }
-
-  void _toggleExpansion(int index) {
-    setState(() {
-      _expansionStates[index] = !(_expansionStates[index] ?? false);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: AppSpacing.getPagePadding(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // InfoCard con botón de agregar si está disponible
+          /// InfoCard en la parte superior
+          /// Muestra información contextual de la página (ej: sede)
           InfoCard(
-            icon: widget.icon,
-            items: widget.infoCardItems,
-            trailing: widget.contentListConfig.onAdd != null
-                ? IconButton(
-                    icon: const Icon(
-                      Icons.add_circle_rounded,
-                      color: Color(0xFF667EEA),
-                      size: 24,
-                    ),
-                    onPressed: widget.contentListConfig.onAdd,
-                    tooltip: 'Agregar elemento',
-                  )
-                : null,
+            icon: icon,
+            items: infoCardItems,
           ),
           
           SizedBox(height: AppSpacing.xl),
 
-          // Lista de contenido
+          /// ContentListWidget que maneja toda la funcionalidad de la lista
+          /// Aplica el principio de Delegación al usar un widget especializado
+          /// que ya tiene implementado: título, contador, expandir/comprimir, botón agregar
           Expanded(
-            child: widget.contentListConfig.items.isEmpty
-                ? _buildEmptyState()
-                : _buildContentList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.inbox_outlined,
-            size: 64,
-            color: Colors.grey[400],
-          ),
-          SizedBox(height: AppSpacing.lg),
-          Text(
-            widget.contentListConfig.emptyMessage ?? 'No hay elementos',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
+            child: ContentListWidget<T>(
+              title: contentListConfig.listTitle,
+              items: contentListConfig.items,
+              cardBuilder: contentListConfig.cardBuilder,
+              onAdd: contentListConfig.onAdd,
+              emptyText: contentListConfig.emptyMessage ?? 'No hay elementos disponibles',
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildContentList() {
-    return ListView.separated(
-      itemCount: widget.contentListConfig.items.length,
-      separatorBuilder: (context, index) => SizedBox(height: AppSpacing.xs),
-      itemBuilder: (context, index) {
-        final item = widget.contentListConfig.items[index];
-        final isExpanded = _expansionStates[index] ?? false;
-
-        return widget.contentListConfig.cardBuilder(
-          item,
-          isExpanded,
-          () => _toggleExpansion(index),
-        );
-      },
     );
   }
 }

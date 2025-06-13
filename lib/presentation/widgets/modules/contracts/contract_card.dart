@@ -1,8 +1,7 @@
 // lib/presentation/widgets/modules/contracts/contract_card.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../domain/models/contract/contract_item.dart';
-import '../../../../core/design_system/app_spacing.dart';
-import '../../../../core/design_system/app_text_styles.dart';
 import '../../shared/cards/base_card.dart';
 
 class ContractCard extends BaseCard {
@@ -32,25 +31,32 @@ class ContractCard extends BaseCard {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Usar Flexible para evitar overflow en textos largos
-              Flexible(
-                child: Text(
-                  contract.nombre,
-                  style: AppTextStyles.cardTitle(context, isDarkMode: isDarkMode),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              Text(
+                contract.nombre,
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: isDarkMode ? Colors.white : const Color(0xFF111827),
+                  letterSpacing: -0.2,
+                  height: 1.2,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: AppSpacing.xs),
+              const SizedBox(height: 4),
               Text(
                 'DNI: ${contract.dni}',
-                style: AppTextStyles.cardSubtitle(context, isDarkMode: isDarkMode),
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  color: isDarkMode ? Colors.grey[400] : const Color(0xFF6B7280),
+                  height: 1.3,
+                ),
               ),
             ],
           ),
         ),
-        SizedBox(width: AppSpacing.sm),
-        _buildIconButton(
-          context: context,
+        const SizedBox(width: 8),
+        IconButton(
           icon: AnimatedRotation(
             turns: isExpanded ? 0.5 : 0,
             duration: const Duration(milliseconds: 200),
@@ -62,10 +68,10 @@ class ContractCard extends BaseCard {
           ),
           onPressed: onToggleExpansion,
           tooltip: isExpanded ? 'Ocultar detalles' : 'Ver detalles',
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
         ),
-        SizedBox(width: AppSpacing.xs),
-        _buildIconButton(
-          context: context,
+        IconButton(
           icon: Icon(
             Icons.edit_outlined,
             color: Theme.of(context).primaryColor,
@@ -73,6 +79,8 @@ class ContractCard extends BaseCard {
           ),
           onPressed: onEdit!,
           tooltip: 'Editar contrato',
+          padding: const EdgeInsets.all(8),
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
         ),
       ],
     );
@@ -81,6 +89,7 @@ class ContractCard extends BaseCard {
   @override
   Widget buildExpandedContent(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDarkMode ? Colors.white70 : const Color(0xFF4B5563);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,34 +99,17 @@ class ContractCard extends BaseCard {
           icon: Icons.event_outlined,
           label: 'EVENTO',
           value: contract.evento,
-          isDarkMode: isDarkMode,
+          textColor: textColor,
         ),
-        SizedBox(height: AppSpacing.sm),
+        const SizedBox(height: 8),
         _buildInfoRow(
           context,
           icon: Icons.schedule_outlined,
           label: 'FECHA Y HORA',
           value: contract.fechaHora,
-          isDarkMode: isDarkMode,
+          textColor: textColor,
         ),
       ],
-    );
-  }
-
-  // Widget helper para botones de iconos consistentes
-  Widget _buildIconButton({
-    required BuildContext context,
-    required Widget icon,
-    required VoidCallback onPressed,
-    required String tooltip,
-  }) {
-    return IconButton(
-      icon: icon,
-      onPressed: onPressed,
-      tooltip: tooltip,
-      padding: EdgeInsets.all(AppSpacing.sm),
-      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-      splashRadius: 20,
     );
   }
 
@@ -126,28 +118,33 @@ class ContractCard extends BaseCard {
     required IconData icon,
     required String label,
     required String value,
-    required bool isDarkMode,
+    required Color textColor,
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: Theme.of(context).primaryColor,
-        ),
-        SizedBox(width: AppSpacing.sm),
+        Icon(icon, size: 16, color: Theme.of(context).primaryColor),
+        const SizedBox(width: 8),
         Expanded(
           child: RichText(
             text: TextSpan(
               children: [
                 TextSpan(
                   text: '$label: ',
-                  style: AppTextStyles.cardInfoLabel(context, isDarkMode: isDarkMode),
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                    height: 1.4,
+                  ),
                 ),
                 TextSpan(
                   text: value,
-                  style: AppTextStyles.cardInfo(context, isDarkMode: isDarkMode),
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: textColor,
+                    height: 1.4,
+                  ),
                 ),
               ],
             ),
