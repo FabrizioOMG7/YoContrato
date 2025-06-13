@@ -5,25 +5,21 @@ import '../info_card.dart';
 import '../content_list/content_list_widget.dart';
 import '../../../../domain/models/base/base_item.dart';
 
-/// Configuración para la lista de contenido que define cómo se comporta la lista
-/// Aplica el principio de Responsabilidad Única (SRP) al encapsular toda la configuración de la lista
 class ContentListConfig<T extends BaseItem> {
   final List<T> items;
   final VoidCallback? onAdd;
   final Widget Function(T item, bool isExpanded, VoidCallback onToggle) cardBuilder;
   final String? emptyMessage;
-  final String listTitle; // Nuevo campo para el título de la lista
+  final String listTitle;
 
   const ContentListConfig({
     required this.items,
     required this.cardBuilder,
-    required this.listTitle, // Título obligatorio
+    required this.listTitle,
     this.onAdd,
     this.emptyMessage,
   });
 
-  /// Factory constructor para contratos
-  /// Aplica el patrón Factory para crear configuraciones específicas
   factory ContentListConfig.contracts({
     required List<T> contratos,
     required VoidCallback onAdd,
@@ -33,14 +29,13 @@ class ContentListConfig<T extends BaseItem> {
       items: contratos,
       onAdd: onAdd,
       cardBuilder: cardBuilder,
-      listTitle: 'CONTRATOS REGISTRADOS', // Título específico para contratos
-      emptyMessage: 'No hay contratos disponibles',
+      listTitle: 'POSTULANTES REGISTRADOS',
+      emptyMessage: 'No hay postulantes disponibles',
     );
   }
 }
 
-/// Template de página que combina InfoCard con ContentListWidget
-/// Aplica el principio de Composición sobre Herencia al usar ContentListWidget en lugar de reimplementar la funcionalidad
+/// Template optimizado para maximizar el espacio de los cards
 class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
   final Widget icon;
   final List<InfoCardItem> infoCardItems;
@@ -56,22 +51,21 @@ class PageContentTemplate<T extends BaseItem> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      // Padding de página reducido
       padding: AppSpacing.getPagePadding(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// InfoCard en la parte superior
-          /// Muestra información contextual de la página (ej: sede)
+          /// InfoCard compacto
           InfoCard(
             icon: icon,
             items: infoCardItems,
           ),
           
-          SizedBox(height: AppSpacing.xl),
+          // Espaciado reducido entre InfoCard y lista
+          SizedBox(height: AppSpacing.md), // Reducido de xl (20) a md (12)
 
-          /// ContentListWidget que maneja toda la funcionalidad de la lista
-          /// Aplica el principio de Delegación al usar un widget especializado
-          /// que ya tiene implementado: título, contador, expandir/comprimir, botón agregar
+          /// Lista expandida que ocupa todo el espacio disponible
           Expanded(
             child: ContentListWidget<T>(
               title: contentListConfig.listTitle,

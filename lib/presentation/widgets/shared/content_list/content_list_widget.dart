@@ -1,6 +1,8 @@
+// lib/presentation/widgets/shared/content_list/content_list_widget.dart
 import 'package:flutter/material.dart';
 import 'package:yo_contrato_app/domain/models/base/base_item.dart';
 import '../styles/card_styles.dart';
+import '../../../../core/design_system/app_spacing.dart';
 
 class ContentListWidget<T extends BaseItem> extends StatefulWidget {
   final String title;
@@ -55,9 +57,11 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
     );
   }
 
+  /// Header compacto con padding reducido
   Widget _buildHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      // Padding del header reducido
+      padding: AppSpacing.getListHeaderPadding(),
       child: Row(
         children: [
           Container(
@@ -120,7 +124,7 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
             const SizedBox(width: 8),
           ],
 
-          // Contador y botón de agregar juntos
+          // Contador compacto
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
@@ -139,31 +143,35 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
             ),
           ),
 
-          // Botón de agregar (solo icono)
+          // Botón de agregar compacto
           if (widget.onAdd != null) ...[
             const SizedBox(width: 8),
-          IconButton(
-            onPressed: widget.onAdd,
-            icon: const Icon(
-              Icons.person_add_alt_1,
-              size:30,
-              color: Color(0xFF667EEA),
-            ),
-            tooltip: 'Agregar nuevo postulante',
-          )
+            IconButton(
+              onPressed: widget.onAdd,
+              icon: const Icon(
+                Icons.person_add_alt_1,
+                size: 26, // Reducido de 30 a 26
+                color: Color(0xFF667EEA),
+              ),
+              tooltip: 'Agregar nuevo elemento',
+              // Padding reducido del botón
+              padding: const EdgeInsets.all(8),
+              constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+            )
           ],
         ],
       ),
     );
   }
 
+  /// Lista con padding optimizado para maximizar espacio
   Widget _buildContent(BuildContext context) {
     if (widget.items.isEmpty) {
       return Container(
         constraints: const BoxConstraints(minHeight: 200),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(24), // Reducido de 32 a 24
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -192,9 +200,11 @@ class _ContentListWidgetState<T extends BaseItem> extends State<ContentListWidge
     return ListView.separated(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.all(16),
+      // Padding de la lista reducido para maximizar espacio de cards
+      padding: AppSpacing.getListPadding(),
       itemCount: widget.items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      // Separación entre cards reducida
+      separatorBuilder: (_, __) => SizedBox(height: AppSpacing.cardSpacing),
       itemBuilder: (context, index) {
         final item = widget.items[index];
         final isExpanded = _expansionStates[item.id] ?? false;
