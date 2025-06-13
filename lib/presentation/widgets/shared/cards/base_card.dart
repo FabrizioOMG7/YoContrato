@@ -26,7 +26,9 @@ abstract class BaseCard extends StatelessWidget {
       curve: Curves.easeInOut,
       child: Card(
         // Margen vertical reducido para que los cards estén más cerca
-        margin: EdgeInsets.symmetric(vertical: AppSpacing.xs / 2, horizontal: AppSpacing.xs/20), // Aún más reducido
+        margin: EdgeInsets.symmetric(
+          vertical: AppSpacing.xs / 2,
+          horizontal: AppSpacing.xs /2), // Aún más reducido
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
